@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Simple Sidebar - Start Bootstrap Template</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../static/css/simple-sidebar.css" rel="stylesheet">
+    <link href="../static/css/simple-css.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Java Script -->
+    <script type="text/javascript">
+
+    /***********************************************
+    * Drop Down Date select script- by JavaScriptKit.com
+    * This notice MUST stay intact for use
+    * Visit JavaScript Kit at http://www.javascriptkit.com/ for this script and more
+    ***********************************************/
+
+    var monthtext=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sept','Oct','Nov','Dec'];
+
+    function populatedropdown(dayfield, monthfield, yearfield){
+    var today=new Date()
+    var dayfield=document.getElementById(dayfield)
+    var monthfield=document.getElementById(monthfield)
+    var yearfield=document.getElementById(yearfield)
+    for (var i=0; i<31; i++)
+    dayfield.options[i]=new Option(i, i+1)
+    dayfield.options[today.getDate()]=new Option(today.getDate(), today.getDate(), true, true) //select today's day
+    for (var m=0; m<12; m++)
+    monthfield.options[m]=new Option(monthtext[m], monthtext[m])
+    monthfield.options[today.getMonth()]=new Option(monthtext[today.getMonth()], monthtext[today.getMonth()], true, true) //select today's month
+    var thisyear=today.getFullYear()
+    for (var y=0; y<20; y++){
+    yearfield.options[y]=new Option(thisyear, thisyear)
+    thisyear+=1
+    }
+    yearfield.options[0]=new Option(today.getFullYear(), today.getFullYear(), true, true) //select today's year
+    }
+
+    </script>
+
+</head>
+
+<body>
+
+
+    <div id="wrapper" class="toggled">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="{% url 'home' %}">Home</a>
+                </li>
+                <li>
+                    <a href="{% url 'analytics' %}">Analytics</a>
+                </li>
+                <li>
+                    <a href="{% url 'alarm' %}">Alarm</a>
+                </li>
+                <li>
+                    <a href="{% url 'settings' %}">Settings</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-10">
+                        <h1><center>Smart Sleeper</center></h1>
+                        <h2><center><b>Analytics</b></center></h2>
+                        <center><img src="../static/images/tempGraph2.png" alt="Temp Graph"></center>
+                        </br>
+                        <p><b>Select Date: 
+                            <form action="" name="someform">
+                            <select id="daydropdown">
+                            </select> 
+                            <select id="monthdropdown">
+                            </select> 
+                            <select id="yeardropdown">
+                            </select> 
+                            </form>
+
+                            <script type="text/javascript">
+
+                            //populatedropdown(id_of_day_select, id_of_month_select, id_of_year_select)
+                            window.onload=function(){
+                            populatedropdown("daydropdown", "monthdropdown", "yeardropdown")
+                            }
+                            </script>
+
+                            <input type="submit" value="Submit">
+                        </p>
+
+                        <div>
+                        <p class="col-md-offset-4">Heart Rate</p>
+                        </div>
+
+
+                        <center><img src="../static/images/tempGraph3.png" alt="Temp Graph"></center>
+                    </div>
+                </div>
+            </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+<!--    
+    <script src="js/jquery.js"></script>
+
+   
+    <script src="js/bootstrap.min.js"></script>
+
+    Menu Toggle Script
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    </script> -->
+
+</body>
+
+</html>
