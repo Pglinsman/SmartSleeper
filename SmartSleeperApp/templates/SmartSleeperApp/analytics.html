@@ -26,6 +26,7 @@
     <![endif]-->
 
     <!-- Java Script -->
+    <script src="../static/js/linegraph.js" type="text/javascript"></script>
     <script type="text/javascript">
 
     /***********************************************
@@ -89,7 +90,11 @@
                     <div class="col-lg-10">
                         <h1><center>Smart Sleeper</center></h1>
                         <h2><center><b>Analytics</b></center></h2>
-                        <center><img src="../static/images/tempGraph2.png" alt="Temp Graph"></center>
+                        <center>
+                            <script>
+                            drawBasic();
+                            </script>
+                        </center>
                         </br>
                         <p><b>Select Date: 
                             <form action="" name="someform">
