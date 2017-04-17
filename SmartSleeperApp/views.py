@@ -10,6 +10,7 @@ import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 import numpy as np
 ##
+import os
 
 PATH = "C:\\" + "Users\Patrick\Desktop\18549\SmartSleeperWebPage\SmartSleeper\SmartSleeperApp"
 
@@ -82,8 +83,8 @@ def settings(request):
 
 #ML Stuff
 def machine_learning():
-  train = pd.read_csv(r'C:\Users\Patrick\Desktop\18549\SmartSleeperWebPage\SmartSleeper\SmartSleeperApp\train.csv',nrows=30000)
-  test = pd.read_csv(r'C:\Users\Patrick\Desktop\18549\SmartSleeperWebPage\SmartSleeper\SmartSleeperApp\test.csv')
+  train = pd.read_csv(os.getcwd() + '/SmartSleeperApp/train.csv',nrows=30000)
+  test = pd.read_csv(os.getcwd() + '/SmartSleeperApp/test.csv')
 
 
   cols = ['Start__sec_', 'ihr']
