@@ -99,9 +99,13 @@
                                   // Chart data records -- each entry in this array corresponds to a point on
                                   // the chart.
                                   data: [
+                                    {% if pair %}
                                     {% for timestamp, value in pair %}
                                     { year: "{{timestamp}}", value: {{value}} },
                                     {% endfor %}
+                                    {% else %}
+                                    { year: "2017", value: 0 },
+                                    {% endif %}
                                   ],
                                   // The name of the data record attribute that contains x-values.
                                   xkey: 'year',
@@ -109,7 +113,7 @@
                                   ykeys: ['value'],
                                   // Labels for the ykeys -- will be displayed when you hover over the
                                   // chart.
-                                  labels: ['Heart Rate'],
+                                  labels: ['Value'],
 
                                   
 
@@ -124,14 +128,16 @@
                         {% endfor %}
                         </p>
                         <p><b>Select Date: 
-                            <form action="" name="someform">
-                            <select id="daydropdown">
+                            <form method="post" action="{% url 'analytics' %}">
+
+                            <select id="daydropdown" name="day">
                             </select> 
-                            <select id="monthdropdown">
+                            <select id="monthdropdown" name="month">
                             </select> 
-                            <select id="yeardropdown">
+                            <select id="yeardropdown" name="year">
                             </select> 
-                            </form>
+                                
+                            
 
                             <script type="text/javascript">
 
@@ -141,7 +147,13 @@
                             }
                             </script>
 
-                            <input type="submit" value="Submit">
+                            <div class="col-sm-3">
+                              <button class="btn btn-sm btn-primary btn-block" type="submit">Submit</button>
+                            </div>
+
+
+                            {% csrf_token %}
+                            </form>
                         </p>
 
                         <div>

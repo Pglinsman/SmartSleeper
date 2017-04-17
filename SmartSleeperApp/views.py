@@ -4,6 +4,8 @@ import json
 import decimal
 from boto3.dynamodb.conditions import Key, Attr
 from django.shortcuts import render
+import datetime
+from dateutil import parser
 
 #ML STUFF
 import pandas as pd
@@ -24,23 +26,34 @@ def parse_time(time):
 #Home Page
 def home(request):
   context = {}
-  dynamodb = boto3.resource('dynamodb', region_name='eu-west-1')
-
-  table = dynamodb.Table('SensorData')
-
-  response = table.query(
-      KeyConditionExpression=Key('SensorId').eq("Temperature")
-  )
-
   timeStamps = []
   values = []
   pair = []
 
-  for i in response['Items']:
-    timeStamps.append(parse_time(i['Timestamp']))
-    values.append(i['Value'])
+  #Table stuff
+  dynamodb = boto3.resource('dynamodb', region_name='eu-west-1')
+  table = dynamodb.Table('SensorData')
+  response = table.query(
+      KeyConditionExpression=Key('SensorId').eq("Temperature")
+  )
 
-  pair = zip(timeStamps, values)
+
+  #Gets dates
+  now = datetime.datetime.now()
+  month = int(now.month)
+  day = int(now.day)
+
+  #Some awful logic to show today and yesterday - wont work at end of a month
+  for i in response['Items']:
+    timestampMonth = int(i['Timestamp'][6:7])
+    timestampDay = int(i['Timestamp'][8:10])
+    if(month == timestampMonth and (day == timestampDay or (day-1) == timestampDay)):
+      timeStamps.append(parse_time(i['Timestamp']))
+      values.append(i['Value'])
+
+  #A way to return data
+  if(len(timeStamps) > 0):
+    pair = zip(timeStamps, values)
   context['pair'] = pair
 
   return render(request, 'SmartSleeperApp/home.html', context)
@@ -54,31 +67,125 @@ def alarm(request):
 #Analytics Page
 def analytics(request):
   context = {}
-  dynamodb = boto3.resource('dynamodb', region_name='eu-west-1')
-
-  table = dynamodb.Table('data')
-
-  response = table.query(KeyConditionExpression=Key('pptid').eq('1'))
-
   timeStamps = []
   values = []
   pair = []
+  now = datetime.datetime.now()
+  year = int(now.year)
+  month = int(now.month)
+  day = int(now.day)
+
+
+  print(request.POST)
+
+  if not 'day' in request.POST or not request.POST['day']:
+    print("")
+  else:
+    #Fix this nonsense at some point
+    year = int(request.POST['year'])
+    day = int(request.POST['day']) 
+    if(request.POST['month'] == "Apr"):
+      month = 4
+    elif(request.POST['month'] == "May"):
+      month = 5
+    else:
+      month = 0
+
+  #Table stuff
+  dynamodb = boto3.resource('dynamodb', region_name='eu-west-1')
+  table = dynamodb.Table('SensorData')
+  response = table.query(
+      KeyConditionExpression=Key('SensorId').eq("Temperature")
+  )
+
+  print("Day ", day)
+  print("Month ", month)
+  print("Year ", year)
 
   for i in response['Items']:
-    timeStamps.append(i['start_sec'])
-    values.append(i['ihr'])
+    timestampYear = int(i['Timestamp'][0:4])
 
-  pair = zip(timeStamps, values)
+    timestampMonth = int(i['Timestamp'][6:7])
+
+    timestampDay = int(i['Timestamp'][8:10])
+
+    #print(timestampDay)
+
+    if((month == timestampMonth) and (day == timestampDay or (day-1) == timestampDay) and (year == timestampYear)):
+      timeStamps.append(parse_time(i['Timestamp']))
+      values.append(i['Value'])
+
+  if(len(timeStamps) > 0):
+    pair = zip(timeStamps, values)
+    
   context['pair'] = pair
 
-  results = machine_learning()
+  #results = machine_learning()
 
-  context['results'] = results
+  #context['results'] = results
   return render(request, 'SmartSleeperApp/analytics.html', context)
 
 #Settings Page
 def settings(request):
   context = {}
+  return render(request, 'SmartSleeperApp/settings.html', context)
+
+#LED On
+def led_on(request):
+  context = {}
+  #Table stuff
+  dynamodb = boto3.resource('dynamodb', region_name='eu-west-1')
+  table = dynamodb.Table('SensorData')
+
+
+  sensorID = "Alarm"
+  timestamp = "1"
+  value = True
+
+  response = table.update_item(
+      Key={
+          'SensorId': sensorID,
+          'Timestamp': timestamp
+      },
+      ExpressionAttributeNames={
+      "#v" : "Value"
+      },
+      UpdateExpression="set #v = :v",
+      ExpressionAttributeValues={
+          ':v': value
+      },
+      ReturnValues="UPDATED_NEW"
+  )
+
+  return render(request, 'SmartSleeperApp/settings.html', context)
+
+#LED Off
+def led_off(request):
+  context = {}
+  #Table stuff
+  dynamodb = boto3.resource('dynamodb', region_name='eu-west-1')
+  table = dynamodb.Table('SensorData')
+
+
+  sensorID = "Alarm"
+  timestamp = "1"
+  value = False
+
+  response = table.update_item(
+      Key={
+          'SensorId': sensorID,
+          'Timestamp': timestamp
+      },
+      ExpressionAttributeNames={
+      "#v" : "Value"
+      },
+      UpdateExpression="set #v = :v",
+      ExpressionAttributeValues={
+          ':v': value
+      },
+      ReturnValues="UPDATED_NEW"
+  )
+
   return render(request, 'SmartSleeperApp/settings.html', context)
 
 #ML Stuff

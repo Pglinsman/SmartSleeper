@@ -73,9 +73,13 @@
                               // Chart data records -- each entry in this array corresponds to a point on
                               // the chart.
                               data: [
+                                {% if pair %}
                                 {% for timestamp, value in pair %}
                                 { year: "{{timestamp}}", value: {{value}} },
                                 {% endfor %}
+                                {% else %}
+                                { year: "2017", value: 0 },
+                                {% endif %}
                               ],
                               // The name of the data record attribute that contains x-values.
                               xkey: 'year',
