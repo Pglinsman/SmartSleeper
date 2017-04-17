@@ -5,6 +5,7 @@ import decimal
 from boto3.dynamodb.conditions import Key, Attr
 from django.shortcuts import render
 import datetime
+import time
 from dateutil import parser
 
 #ML STUFF
@@ -70,13 +71,12 @@ def analytics(request):
   timeStamps = []
   values = []
   pair = []
+  pairCycle = []
   now = datetime.datetime.now()
   year = int(now.year)
   month = int(now.month)
   day = int(now.day)
 
-
-  print(request.POST)
 
   if not 'day' in request.POST or not request.POST['day']:
     print("")
@@ -98,29 +98,29 @@ def analytics(request):
       KeyConditionExpression=Key('SensorId').eq("Temperature")
   )
 
-  print("Day ", day)
-  print("Month ", month)
-  print("Year ", year)
-
   for i in response['Items']:
+
     timestampYear = int(i['Timestamp'][0:4])
 
     timestampMonth = int(i['Timestamp'][6:7])
 
     timestampDay = int(i['Timestamp'][8:10])
 
-    #print(timestampDay)
+
 
     if((month == timestampMonth) and (day == timestampDay or (day-1) == timestampDay) and (year == timestampYear)):
       timeStamps.append(parse_time(i['Timestamp']))
       values.append(i['Value'])
 
+  results = machine_learning(timeStamps, values)
+
   if(len(timeStamps) > 0):
     pair = zip(timeStamps, values)
-    
-  context['pair'] = pair
+    pairCycle = zip(timeStamps, results)
 
-  #results = machine_learning()
+  context['pair'] = pair
+  context['pairCycle'] = pairCycle
+
 
   #context['results'] = results
   return render(request, 'SmartSleeperApp/analytics.html', context)
@@ -188,11 +188,12 @@ def led_off(request):
 
   return render(request, 'SmartSleeperApp/settings.html', context)
 
+
+
 #ML Stuff
-def machine_learning():
+def machine_learning(timeStamps, values):
   train = pd.read_csv(os.getcwd() + '/SmartSleeperApp/train.csv',nrows=30000)
   test = pd.read_csv(os.getcwd() + '/SmartSleeperApp/test.csv')
-
 
   cols = ['Start__sec_', 'ihr']
   colsRes = ['sleepstage01']
@@ -200,17 +201,51 @@ def machine_learning():
   trainArr = train.as_matrix(cols) #training array
   trainRes = train.as_matrix(colsRes) # training results
 
+
   ## Training!
   rf = RandomForestClassifier(n_estimators=50) # initialize
   rf.fit(trainArr, trainRes) 
 
   testArr = test.as_matrix(cols)
 
-  results = rf.predict(testArr)
+  #[0][0] is elapsed time, [0][1] is the ihr at the time
 
-  test['predictions'] = results
+  elapsedTime = 0
+  prevTime = 0
+  testArr = []
+  for i in range(0, len(timeStamps)):
+    timeInSeconds = convert(timeStamps[i])
+    if(prevTime != 0):
+      elapsedTime = (timeInSeconds - prevTime) + 1000
+    else:
+      elapsedTime = 1000
 
-  return results[0:3]
+    arr = [elapsedTime, values[i]]
+    testArr.append(arr)
+    prevTime = timeInSeconds
+
+  results = []
+  if(len(testArr) != 0):
+    results = rf.predict(testArr)
+
+
+  #test['predictions'] = results
+
+  print(results)
+
+  return results
 
   # df = pd.DataFrame(test)
   # df.to_csv(r'C:\Users\Patrick\Desktop\18549\SmartSleeperWebPage\SmartSleeper\SmartSleeperApp\predictions.csv')
+
+#date time conversion
+def convert(timestamp):
+  year = int(timestamp[0:4])
+  month = int(timestamp[5:7])
+  day = int(timestamp[8:10])
+  hour = int(timestamp[11:13])
+  minute = int(timestamp[14:16])
+  second = int(timestamp[17:19])
+  newDate = datetime.datetime(year, month, day, hour, minute, second)
+  timeInSeconds = time.mktime(newDate.timetuple())
+  return timeInSeconds

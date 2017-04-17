@@ -89,7 +89,7 @@
                 <div class="row">
                     <div class="col-lg-10">
                         <h1><center>Smart Sleeper</center></h1>
-                        <h2><center><b>Analytics</b></center></h2>
+                        <h2><center><b>Heart Rate</b></center></h2>
                             <center>
                             <div id="myfirstchart" style="height: 250px;"></div>
                                 <script>
@@ -122,7 +122,6 @@
                                 </script>
                             </center>
                         </br>
-                        <p> <b>Sleep Stages:</b>
                         {% for result in results %}
                         {{result}}
                         {% endfor %}
@@ -156,12 +155,40 @@
                             </form>
                         </p>
 
-                        <div>
-                        <p class="col-md-offset-4">Heart Rate</p>
-                        </div>
+                        <h2><center><b>Sleep Stage</b></center></h2>
 
 
-                        <center><img src="../static/images/tempGraph3.png" alt="Temp Graph"></center>
+                        <center>
+                            <div id="mysecondchart" style="height: 250px;"></div>
+                                <script>
+                                new Morris.Line({
+                                  // ID of the element in which to draw the chart.
+                                  element: 'mysecondchart',
+                                  // Chart data records -- each entry in this array corresponds to a point on
+                                  // the chart.
+                                  data: [
+                                    {% if pairCycle %}
+                                    {% for timestamp, value in pairCycle %}
+                                    { year: "{{timestamp}}", value: {{value}} },
+                                    {% endfor %}
+                                    {% else %}
+                                    { year: "2017", value: 0 },
+                                    {% endif %}
+                                  ],
+                                  // The name of the data record attribute that contains x-values.
+                                  xkey: 'year',
+                                  // A list of names of data record attributes that contain y-values.
+                                  ykeys: ['value'],
+                                  // Labels for the ykeys -- will be displayed when you hover over the
+                                  // chart.
+                                  labels: ['Value'],
+
+                                  
+
+
+                                });
+                                </script>
+                            </center>
                     </div>
                 </div>
             </div>
