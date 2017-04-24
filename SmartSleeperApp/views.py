@@ -39,6 +39,7 @@ def home(request):
   timeStamps = []
   values = []
   pair = []
+  pairCycle = []
 
   #Table stuff
   dynamodb = boto3.resource('dynamodb', region_name='eu-west-1')
