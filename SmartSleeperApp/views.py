@@ -61,10 +61,10 @@ def home(request):
 
     timestampMonth = int(i['Timestamp'][6:7])
     timestampDay = int(i['Timestamp'][8:10])
-
-    # if(month == timestampMonth and (day == timestampDay or (day-1) == timestampDay)):
-    timeStamps.append(parse_time(i['Timestamp']))
-    values.append(i['Value'])
+    if(timestampDay != 24):
+      # if(month == timestampMonth and (day == timestampDay or (day-1) == timestampDay)):
+      timeStamps.append(parse_time(i['Timestamp']))
+      values.append(i['Value'])
 
 
   #A way to return data
@@ -125,7 +125,7 @@ def analytics(request):
   dynamodb = boto3.resource('dynamodb', region_name='eu-west-1')
   table = dynamodb.Table('SensorData')
   response = table.query(
-      KeyConditionExpression=Key('SensorId').eq("Temperature")
+      KeyConditionExpression=Key('SensorId').eq("Heartrate")
   )
 
   for i in reversed(response['Items']):
