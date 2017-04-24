@@ -283,7 +283,7 @@ def check_alarm(request):
   context = {}
   currentTime = datetime.today()
   for alarm in Alarm.objects.all():
-    timeDelta = abs(unix_time(currentTime) - float(alarm.text)) - timeOffset
+    timeDelta = abs(unix_time(currentTime) - float(alarm.text)) - 14400 #FIX THIS LATER
     #If within 1 minute
     print(timeDelta)
     if(abs(timeDelta) < 60):
