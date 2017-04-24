@@ -25,4 +25,7 @@ urlpatterns = [
     url(r'^settings$', SmartSleeperApp.views.settings, name='settings'),
     url(r'^led-off$', SmartSleeperApp.views.led_off, name='led-off'),
     url(r'^led-on$', SmartSleeperApp.views.led_on, name='led-on'),
+    url(r'^check-alarm$', SmartSleeperApp.views.check_alarm, name='check-alarm'),
+    url(r'^add-alarm$', SmartSleeperApp.views.add_alarm, name='add-alarm'),
+    url(r'^delete-alarm/(?P<item_id>\d+)$', SmartSleeperApp.views.delete_alarm, name='delete-alarm'),
 ]

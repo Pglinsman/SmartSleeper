@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Simple Sidebar - Start Bootstrap Template</title>
+    <title>Smart Sleeper</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="../static/css/bootstrap.min.css" rel="stylesheet">
@@ -64,7 +64,7 @@
                     <div class="col-lg-10">
                         <h1><center>Smart Sleeper</center></h1>
                         <h2><center><b>Alarm</b></center></h2>
-                        <p><b><u>Reoccuring Alarms</u></b></p>
+                        <p><b><u>Reoccuring Alarms - Work In Progress</u></b></p>
                         <ul id="alarm-list1">
                             <li>
                                 Monday: 9am EST
@@ -93,20 +93,29 @@
 
                         <p><b><u>One Time Alarms</u></b></p>
                         <ul id="alarm-list2">
+                            {% for alarm, id in alarms %}
                             <li>
-                                3/24/2017: 8:30am EST
+                                {{alarm}} <a href="/delete-alarm/{{id}}">X</a>
                             </li>
+                            {% endfor %}
                             <li>
                                 + Create a new One Time Alarm 
 
-                                <input type="text" id="datetime12" data-format="DD-MM-YYYY h:mm a" data-template="DD / MM / YYYY     hh : mm a" name="datetime" value="21-12-2012 8:30 pm">
+                                <form action="{% url 'add-alarm' %}" method="post">
+                                <input type="text" id="datetime12" data-format="DD-MM-YYYY h:mm a" data-template="DD / MM / YYYY     hh : mm a" name="datetime" value="24-04-2017 8:30 pm">
                                 <script>
                                 $(function(){
-                                    $('#datetime12').combodate();  
+                                    $('#datetime12').combodate({
+                                        minYear: 2017,
+                                        maxYear: 2018,
+                                    });
                                 });
                                 </script>
 
+                                {% csrf_token %}
+
                                 <input type="submit" value="Submit">
+                                </form>
 
                             </li>
                         </ul>
@@ -147,6 +156,18 @@
                 </div>
             </div>
         <!-- /#page-content-wrapper -->
+
+    </div>
+
+    <!-- Buttons -->
+    <div style="position: absolute; bottom: 5px;" class="container">
+
+      <div class="col-sm-2 col-sm-push-8">
+        <a href="{% url 'led-off' %}" class="btn btn-lg btn-primary btn-block" role="button">LED Off</a>
+      </div>
+      <div class="col-sm-2 col-sm-push-8">
+        <a href="{% url 'led-on' %}" class="btn btn-lg btn-primary btn-block" role="button">LED On</a>
+      </div>
 
     </div>
     <!-- /#wrapper -->

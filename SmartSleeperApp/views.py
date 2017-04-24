@@ -2,11 +2,14 @@ from __future__ import print_function # Python 2/3 compatibility
 import boto3
 import json
 import decimal
+from django.views.decorators.csrf import csrf_exempt
 from boto3.dynamodb.conditions import Key, Attr
 from django.shortcuts import render
-import datetime
+from datetime import datetime
 import time
 from dateutil import parser
+# Imports the Alarm class
+from SmartSleeperApp.models import *
 
 #ML STUFF
 import pandas as pd
@@ -16,6 +19,12 @@ import numpy as np
 import os
 
 PATH = "C:\\" + "Users\Patrick\Desktop\18549\SmartSleeperWebPage\SmartSleeper\SmartSleeperApp"
+
+epoch = datetime.utcfromtimestamp(0)
+timeOffset = 14400
+
+def unix_time(dt):
+    return (dt - epoch).total_seconds()
 
 # Create your views here.
 def parse_time(time):
@@ -35,22 +44,25 @@ def home(request):
   dynamodb = boto3.resource('dynamodb', region_name='eu-west-1')
   table = dynamodb.Table('SensorData')
   response = table.query(
-      KeyConditionExpression=Key('SensorId').eq("Temperature")
+      KeyConditionExpression=Key('SensorId').eq("Heartrate")
   )
 
 
   #Gets dates
-  now = datetime.datetime.now()
+  now = datetime.now()
   month = int(now.month)
   day = int(now.day)
 
   #Some awful logic to show today and yesterday - wont work at end of a month
-  for i in response['Items']:
+  for i in reversed(response['Items']):
     timestampMonth = int(i['Timestamp'][6:7])
     timestampDay = int(i['Timestamp'][8:10])
-    if(month == timestampMonth and (day == timestampDay or (day-1) == timestampDay)):
-      timeStamps.append(parse_time(i['Timestamp']))
-      values.append(i['Value'])
+
+    # if(month == timestampMonth and (day == timestampDay or (day-1) == timestampDay)):
+    timeStamps.append(parse_time(i['Timestamp']))
+    values.append(i['Value'])
+    if(i['Value'] == -1):
+      break;
 
   #A way to return data
   if(len(timeStamps) > 0):
@@ -62,6 +74,16 @@ def home(request):
 #Alarm Page
 def alarm(request):
   context = {}
+  errors = []
+  alarms = []
+  ids = []
+  for alarm in Alarm.objects.all():
+    alarms.append(datetime.fromtimestamp(float(alarm.text)))
+    ids.append(alarm.id)
+    print(alarm.id)
+
+  alarmpair = zip(alarms, ids)
+  context = {'alarms':alarmpair, 'errors':errors}
   return render(request, 'SmartSleeperApp/alarm.html', context)
 
 
@@ -72,7 +94,7 @@ def analytics(request):
   values = []
   pair = []
   pairCycle = []
-  now = datetime.datetime.now()
+  now = datetime.now()
   year = int(now.year)
   month = int(now.month)
   day = int(now.day)
@@ -98,7 +120,7 @@ def analytics(request):
       KeyConditionExpression=Key('SensorId').eq("Temperature")
   )
 
-  for i in response['Items']:
+  for i in reversed(response['Items']):
 
     timestampYear = int(i['Timestamp'][0:4])
 
@@ -111,6 +133,9 @@ def analytics(request):
     if((month == timestampMonth) and (day == timestampDay or (day-1) == timestampDay) and (year == timestampYear)):
       timeStamps.append(parse_time(i['Timestamp']))
       values.append(i['Value'])
+
+    if(i['Value'] == -1):
+      break;
 
   results = machine_learning(timeStamps, values)
 
@@ -209,20 +234,18 @@ def machine_learning(timeStamps, values):
   testArr = test.as_matrix(cols)
 
   #[0][0] is elapsed time, [0][1] is the ihr at the time
+  initialTime = 0
 
-  elapsedTime = 0
-  prevTime = 0
+  if(len(timeStamps) > 0): 
+    initialTime = convert(timeStamps[0])
+
+
   testArr = []
   for i in range(0, len(timeStamps)):
     timeInSeconds = convert(timeStamps[i])
-    if(prevTime != 0):
-      elapsedTime = (timeInSeconds - prevTime) + 1000
-    else:
-      elapsedTime = 1000
-
+    elapsedTime = (timeInSeconds - initialTime)
     arr = [elapsedTime, values[i]]
     testArr.append(arr)
-    prevTime = timeInSeconds
 
   results = []
   if(len(testArr) != 0):
@@ -246,6 +269,63 @@ def convert(timestamp):
   hour = int(timestamp[11:13])
   minute = int(timestamp[14:16])
   second = int(timestamp[17:19])
-  newDate = datetime.datetime(year, month, day, hour, minute, second)
+  newDate = datetime(year, month, day, hour, minute, second)
   timeInSeconds = time.mktime(newDate.timetuple())
   return timeInSeconds
+
+#Checks alarm
+@csrf_exempt
+def check_alarm(request):
+  context = {}
+  currentTime = datetime.today()
+  for alarm in Alarm.objects.all():
+    timeDelta = abs(unix_time(currentTime) - float(alarm.text)) - timeOffset
+    #If within 1 minute
+    if(abs(timeDelta) < 60):
+      print("TIME TO WAKE UP!")
+      alarm.delete()
+      led_on(request)
+
+  return render(request, 'SmartSleeperApp/secret.html', context)
+
+#Adds to alarm list
+def add_alarm(request):
+    errors = []  # A list to record messages for any errors we encounter.
+
+    # Adds the new item to the database if the request parameter is present
+    if not 'datetime' in request.POST or not request.POST['datetime']:
+        errors.append('You must enter an alarm to add.')
+    
+    else:
+        date = request.POST['datetime']
+        newDate = datetime.strptime(date, '%d-%m-%Y %I:%M %p')
+        new_alarm = Alarm(text=str(unix_time(newDate) + timeOffset))
+        new_alarm.save()
+
+    return alarm(request)
+    # alarms = []
+    # ids = []
+    # for alarm in Alarm.objects.all():
+    #   alarms.append(datetime.fromtimestamp(float(alarm.text)))
+    #   ids.append(alarm.id)
+
+    # alarmpair = zip(alarms, ids)
+    # context = {'alarms':alarmpair, 'errors':errors}
+    # return render(request, 'SmartSleeperApp/alarm.html', context)
+
+#Remove alarm
+def delete_alarm(request, item_id):
+    errors = []
+
+    # Deletes the item if present in the todo-list database.
+    try:
+        item_to_delete = Alarm.objects.get(id=item_id)
+        item_to_delete.delete()
+    except ObjectDoesNotExist:
+        errors.append('The item did not exist in the todo list.')
+
+    return alarm(request)
+
+    # alarms = Alarm.objects.all()
+    # context = {'alarms':alarms, 'errors':errors}
+    # return render(request, 'SmartSleeperApp/alarm.html', context)
