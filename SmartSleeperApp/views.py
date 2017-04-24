@@ -55,14 +55,16 @@ def home(request):
 
   #Some awful logic to show today and yesterday - wont work at end of a month
   for i in reversed(response['Items']):
+    if(i['Value'] == -1):
+      break;
+
     timestampMonth = int(i['Timestamp'][6:7])
     timestampDay = int(i['Timestamp'][8:10])
 
     # if(month == timestampMonth and (day == timestampDay or (day-1) == timestampDay)):
     timeStamps.append(parse_time(i['Timestamp']))
     values.append(i['Value'])
-    if(i['Value'] == -1):
-      break;
+
 
   #A way to return data
   if(len(timeStamps) > 0):
@@ -122,6 +124,9 @@ def analytics(request):
 
   for i in reversed(response['Items']):
 
+    if(i['Value'] == -1):
+      break;
+
     timestampYear = int(i['Timestamp'][0:4])
 
     timestampMonth = int(i['Timestamp'][6:7])
@@ -134,8 +139,7 @@ def analytics(request):
       timeStamps.append(parse_time(i['Timestamp']))
       values.append(i['Value'])
 
-    if(i['Value'] == -1):
-      break;
+
 
   results = machine_learning(timeStamps, values)
 
