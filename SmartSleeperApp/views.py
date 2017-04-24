@@ -242,7 +242,7 @@ def machine_learning(timeStamps, values):
   initialTime = 0
 
   if(len(timeStamps) > 0): 
-    initialTime = convert(timeStamps[0])
+    initialTime = convert(timeStamps[len(timeStamps)])
 
 
   testArr = []
