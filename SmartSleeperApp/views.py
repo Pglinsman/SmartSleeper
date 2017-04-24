@@ -225,6 +225,8 @@ def led_off(request):
 
 
 train = pd.read_csv(os.getcwd() + '/SmartSleeperApp/train.csv',nrows=30000)
+cols = ['Start__sec_', 'ihr']
+colsRes = ['sleepstage01']
 trainArr = train.as_matrix(cols) #training array
 trainRes = train.as_matrix(colsRes) # training results
 ## Training!
@@ -234,8 +236,6 @@ rf.fit(trainArr, trainRes)
 #ML Stuff
 def machine_learning(timeStamps, values):
 
-  cols = ['Start__sec_', 'ihr']
-  colsRes = ['sleepstage01']
 
   #[0][0] is elapsed time, [0][1] is the ihr at the time
   initialTime = 0
