@@ -285,6 +285,7 @@ def check_alarm(request):
   for alarm in Alarm.objects.all():
     timeDelta = abs(unix_time(currentTime) - float(alarm.text)) - timeOffset
     #If within 1 minute
+    print(timeDelta)
     if(abs(timeDelta) < 60):
       print("TIME TO WAKE UP!")
       alarm.delete()
