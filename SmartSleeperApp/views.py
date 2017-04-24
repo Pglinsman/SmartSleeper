@@ -21,7 +21,7 @@ import os
 PATH = "C:\\" + "Users\Patrick\Desktop\18549\SmartSleeperWebPage\SmartSleeper\SmartSleeperApp"
 
 epoch = datetime.utcfromtimestamp(0)
-timeOffset = 14400
+timeOffset = 0 #14400
 
 def unix_time(dt):
     return (dt - epoch).total_seconds()
