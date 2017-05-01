@@ -132,7 +132,6 @@ def analytics(request):
 
   for i in reversed(response['Items']):
 
-    print(i['Value'])
 
 
     timestampYear = int(i['Timestamp'][0:4])
@@ -161,6 +160,8 @@ def analytics(request):
   context['pair'] = pair
   context['pairCycle'] = pairCycle
   context['events'] = events
+
+  print(events)
 
 
   #context['results'] = results
