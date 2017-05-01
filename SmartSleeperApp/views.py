@@ -130,8 +130,10 @@ def analytics(request):
 
   for i in reversed(response['Items']):
 
-    if(i['Value'] == -1):
-      break;
+    print(i['Value'])
+
+    # if(i['Value'] == -1):
+    #   break;
 
     timestampYear = int(i['Timestamp'][0:4])
 
@@ -256,6 +258,11 @@ def machine_learning(timeStamps, values):
   if(len(testArr) != 0):
     results = rf.predict(testArr)
 
+  #Fixes the initial time
+  for i in range(0, len(timeStamps)):
+    elapsedTime = abs(timeInSeconds - initialTime)
+    if(results[i] > 1 and elapsedTime < 1200):
+      results[i] = 1
 
   #test['predictions'] = results
   #print(results)

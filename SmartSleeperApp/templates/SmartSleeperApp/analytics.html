@@ -63,97 +63,16 @@
 <body>
 
 
-    <div id="wrapper" class="toggled">
 
-        <!-- Sidebar -->
-        <div id="sidebar-wrapper">
-            <ul class="sidebar-nav">
-                <li class="sidebar-brand">
-                    <a href="{% url 'home' %}">Home</a>
-                </li>
-                <li>
-                    <a href="{% url 'analytics' %}">Analytics</a>
-                </li>
-                <li>
-                    <a href="{% url 'alarm' %}">Alarm</a>
-                </li>
-                <li>
-                    <a href="{% url 'settings' %}">Settings</a>
-                </li>
-            </ul>
-        </div>
         <!-- /#sidebar-wrapper -->
 
         <!-- Page Content -->
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-10">
+                    <div class="col-lg-12">
+                        <a href="{% url 'settings' %}" class="button-clean" ><img src="../../static/images/SettingsButton.png" style="position: absolute;
+                        top: 20px; right: 20px; width:100px; height: auto;"> </a>
                         <h1><center>Smart Sleeper</center></h1>
-                        <h2><center><b>Heart Rate</b></center></h2>
-                            <center>
-                            <div id="myfirstchart" style="height: 250px;"></div>
-                                <script>
-                                new Morris.Line({
-                                  // ID of the element in which to draw the chart.
-                                  element: 'myfirstchart',
-                                  // Chart data records -- each entry in this array corresponds to a point on
-                                  // the chart.
-                                  data: [
-                                    {% if pair %}
-                                    {% for timestamp, value in pair %}
-                                    { year: "{{timestamp}}", value: {{value}} },
-                                    {% endfor %}
-                                    {% else %}
-                                    { year: "2017", value: 0 },
-                                    {% endif %}
-                                  ],
-                                  // The name of the data record attribute that contains x-values.
-                                  xkey: 'year',
-                                  // A list of names of data record attributes that contain y-values.
-                                  ykeys: ['value'],
-                                  // Labels for the ykeys -- will be displayed when you hover over the
-                                  // chart.
-                                  labels: ['Value'],
-
-                                  
-
-
-                                });
-                                </script>
-                            </center>
-                        </br>
-                        {% for result in results %}
-                        {{result}}
-                        {% endfor %}
-                        </p>
-                        <p><b>Select Date: 
-                            <form method="post" action="{% url 'analytics' %}">
-
-                            <select id="daydropdown" name="day">
-                            </select> 
-                            <select id="monthdropdown" name="month">
-                            </select> 
-                            <select id="yeardropdown" name="year">
-                            </select> 
-                                
-                            
-
-                            <script type="text/javascript">
-
-                            //populatedropdown(id_of_day_select, id_of_month_select, id_of_year_select)
-                            window.onload=function(){
-                            populatedropdown("daydropdown", "monthdropdown", "yeardropdown")
-                            }
-                            </script>
-
-                            <div class="col-sm-3">
-                              <button class="btn btn-sm btn-primary btn-block" type="submit">Submit</button>
-                            </div>
-
-
-                            {% csrf_token %}
-                            </form>
-                        </p>
 
                         <h2><center><b>Sleep Stage</b></center></h2>
 
@@ -162,6 +81,8 @@
                             <div id="mysecondchart" style="height: 250px;"></div>
                                 <script>
                                 new Morris.Line({
+                                  gridTextColor: '#000000',
+                                  gridLineColor: '#000000',
                                   // ID of the element in which to draw the chart.
                                   element: 'mysecondchart',
                                   // Chart data records -- each entry in this array corresponds to a point on
@@ -181,7 +102,7 @@
                                   ykeys: ['value'],
                                   // Labels for the ykeys -- will be displayed when you hover over the
                                   // chart.
-                                  labels: ['Value'],
+                                  labels: ['Stage'],
 
                                   
 
@@ -189,12 +110,82 @@
                                 });
                                 </script>
                             </center>
+
+                            
+                        <h2><center><b>Heart Rate</b></center></h2>
+                            <center>
+                            <div id="myfirstchart" style="height: 250px;"></div>
+                                <script>
+                                new Morris.Line({
+                                  gridTextColor: '#000000',
+                                  gridLineColor: '#000000',
+                                  // ID of the element in which to draw the chart.
+                                  element: 'myfirstchart',
+                                  // Chart data records -- each entry in this array corresponds to a point on
+                                  // the chart.
+                                  data: [
+                                    {% if pair %}
+                                    {% for timestamp, value in pair %}
+                                    { year: "{{timestamp}}", value: {{value}} },
+                                    {% endfor %}
+                                    {% else %}
+                                    { year: "2017", value: 0 },
+                                    {% endif %}
+                                  ],
+                                  // The name of the data record attribute that contains x-values.
+                                  xkey: 'year',
+                                  // A list of names of data record attributes that contain y-values.
+                                  ykeys: ['value'],
+                                  // Labels for the ykeys -- will be displayed when you hover over the
+                                  // chart.
+                                  labels: ['Heart Rate'],
+
+                                  
+
+
+                                });
+                                </script>
+                            </center>
+                        </br>
+                        {% for result in results %}
+                        {{result}}
+                        {% endfor %}
+                        </p>
+                        <p><b>
+                            <form method="post" action="{% url 'analytics' %}">
+                            Select Date: 
+                            <select id="daydropdown" name="day">
+                            </select> 
+                            <select id="monthdropdown" name="month">
+                            </select> 
+                            <select id="yeardropdown" name="year">
+                            </select> 
+                                
+                            
+
+                            <script type="text/javascript">
+
+                            //populatedropdown(id_of_day_select, id_of_month_select, id_of_year_select)
+                            window.onload=function(){
+                            populatedropdown("daydropdown", "monthdropdown", "yeardropdown")
+                            }
+                            </script>
+
+                            <div class="col-sm-1 col-push-sm-3">
+                              <button class="btn btn-sm btn-primary btn-block" type="submit">Submit</button>
+                            </div>
+
+
+                            {% csrf_token %}
+                            </form>
+                        </p>
+
+                        
                     </div>
                 </div>
             </div>
         <!-- /#page-content-wrapper -->
 
-    </div>
     <!-- /#wrapper -->
 
 <!--    

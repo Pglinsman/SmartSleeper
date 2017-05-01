@@ -30,31 +30,13 @@
 <body>
 
 
-    <div id="wrapper" class="toggled">
-
-        <!-- Sidebar -->
-        <div id="sidebar-wrapper">
-            <ul class="sidebar-nav">
-                <li class="sidebar-brand">
-                    <a href="{% url 'home' %}">Home</a>
-                </li>
-                <li>
-                    <a href="{% url 'analytics' %}">Analytics</a>
-                </li>
-                <li>
-                    <a href="{% url 'alarm' %}">Alarm</a>
-                </li>
-                <li>
-                    <a href="{% url 'settings' %}">Settings</a>
-                </li>
-            </ul>
-        </div>
-        <!-- /#sidebar-wrapper -->
 
         <!-- Page Content -->
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-10">
+                    <div class="col-lg-12">
+                        <a href="{% url 'analytics' %}" class="button-clean" ><img src="../../static/images/LineGraphButton.png" style="position: absolute;
+                        top: 20px; right: 20px; width:100px; height: auto;"> </a>
                         <h1><center>Smart Sleeper</center></h1>
                         <h2><center><b>Settings</b></center></h2>
                         </br>
@@ -68,14 +50,14 @@
                         <option value="-8">[UTC - 8] Pacific Standard Time</option>
                         <option value="-7">[UTC - 7] Mountain Standard Time</option>
                         <option value="-6">[UTC - 6] Central Standard Time</option>
-                        <option value="-5">[UTC - 5] Eastern Standard Time</option>
+                        <option value="-5" selected="selected">[UTC - 5] Eastern Standard Time</option>
                         <option value="-4.5">[UTC - 4:30] Venezuelan Standard Time</option>
                         <option value="-4">[UTC - 4] Atlantic Standard Time</option>
                         <option value="-3.5">[UTC - 3:30] Newfoundland Standard Time</option>
                         <option value="-3">[UTC - 3] Amazon Standard Time, Central Greenland Time</option>
                         <option value="-2">[UTC - 2] Fernando de Noronha Time, South Georgia &amp; the South Sandwich Islands Time</option>
                         <option value="-1">[UTC - 1] Azores Standard Time, Cape Verde Time, Eastern Greenland Time</option>
-                        <option value="0" selected="selected">[UTC] Western European Time, Greenwich Mean Time</option>
+                        <option value="0">[UTC] Western European Time, Greenwich Mean Time</option>
                         <option value="1">[UTC + 1] Central European Time, West African Time</option>
                         <option value="2">[UTC + 2] Eastern European Time, Central African Time</option>
                         <option value="3">[UTC + 3] Moscow Standard Time, Eastern African Time</option>
