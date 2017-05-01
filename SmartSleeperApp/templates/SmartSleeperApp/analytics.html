@@ -103,9 +103,13 @@
                                   // Labels for the ykeys -- will be displayed when you hover over the
                                   // chart.
                                   labels: ['Stage'],
-                                  {% if events %}
-                                  events: {{events}},
-                                  {% endif %}
+                                  
+                                  events: [
+                                  {% for event in events %}
+                                  {{event}}
+                                  {% endfor %}
+                                  ],
+                                  
 
                                   
 
