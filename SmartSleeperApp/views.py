@@ -120,9 +120,16 @@ def getWakeupTime():
 
   average = sum(events)/len(events)
 
-  print(average)
+  hour = average/60
+  minute = average%60
+  amOrPm = "am"
+  if(hour>12):
+    hour -= 12
+    amOrPm = "pm"
 
-  return(average)
+  wakeUpTime = hour + ":" + minute + " " + amOrPm
+
+  return(wakeUpTime)
 
 
 
