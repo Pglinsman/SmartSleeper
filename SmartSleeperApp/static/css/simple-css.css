@@ -1,5 +1,5 @@
 h1 {
-	font-family: 'Roboto', sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-size: 50px;
   font-weight: bold;
 }
@@ -8,6 +8,10 @@ h2 {
   font-family: 'Roboto', sans-serif;
   font-size: 38px;
   font-weight: bold;
+}
+
+p {
+	font-family: 'Roboto', sans-serif;
 }
 
 .img-circle {

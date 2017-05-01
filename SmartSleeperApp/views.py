@@ -91,7 +91,9 @@ def alarm(request):
     print(alarm.id)
 
   alarmpair = zip(alarms, ids)
-  context = {'alarms':alarmpair, 'errors':errors}
+  wakeup = "6:28 am"
+  sleep = "10:55 pm"
+  context = {'alarms':alarmpair, 'errors':errors, 'wakeup':wakeup, 'sleep':sleep}
   return render(request, 'SmartSleeperApp/alarm.html', context)
 
 
