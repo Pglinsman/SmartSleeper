@@ -251,6 +251,7 @@ def machine_learning(timeStamps, values):
   for i in range(0, len(timeStamps)):
     timeInSeconds = convert(timeStamps[i])
     elapsedTime = (timeInSeconds - initialTime)
+    print(elapsedTime)
     arr = [elapsedTime, values[i]]
     testArr.append(arr)
 
