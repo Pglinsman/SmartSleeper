@@ -123,11 +123,21 @@ def getSleepTime():
   hour = average/60
   minute = average%60
   amOrPm = "am"
+  addZeroMinute = ""
   if(hour>12):
     hour -= 12
     amOrPm = "pm"
 
-  sleepTime = str(hour) + ":" + str(minute) + " " + amOrPm
+  if(hour == 0):
+    hour = 12
+
+  if(minute<10):
+    addZeroMinute = "0"
+
+  if(minute == 0):
+    addZeroMinute = "00"
+
+  sleepTime = str(hour) + ":" + str(minute) + addZeroMinute + " " + amOrPm
 
   return(sleepTime)
 
