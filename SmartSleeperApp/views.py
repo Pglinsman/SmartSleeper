@@ -91,13 +91,13 @@ def alarm(request):
     print(alarm.id)
 
   alarmpair = zip(alarms, ids)
-  wakeup = getWakeupTime()
-  sleep = "10:55 pm"
+  sleep = getSleepTime()
+  wakeup = "7:33 am"
   context = {'alarms':alarmpair, 'errors':errors, 'wakeup':wakeup, 'sleep':sleep}
   return render(request, 'SmartSleeperApp/alarm.html', context)
 
 
-def getWakeupTime():
+def getSleepTime():
   #Table stuff
   dynamodb = boto3.resource('dynamodb', region_name='eu-west-1')
   table = dynamodb.Table('SensorData')
@@ -127,9 +127,9 @@ def getWakeupTime():
     hour -= 12
     amOrPm = "pm"
 
-  wakeUpTime = str(hour) + ":" + str(minute) + " " + amOrPm
+  sleepTime = str(hour) + ":" + str(minute) + " " + amOrPm
 
-  return(wakeUpTime)
+  return(sleepTime)
 
 
 
