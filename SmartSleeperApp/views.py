@@ -141,7 +141,7 @@ def analytics(request):
     timestampDay = int(i['Timestamp'][8:10])
 
     if(i['Value'] == -1):
-      print(parse_time(ip['Timestamp']))
+      print(parse_time(i['Timestamp']))
       events.append(parse_time(i['Timestamp']))
       continue;
 
