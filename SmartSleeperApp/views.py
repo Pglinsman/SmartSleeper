@@ -91,10 +91,51 @@ def alarm(request):
     print(alarm.id)
 
   alarmpair = zip(alarms, ids)
-  wakeup = "6:28 am"
+  wakeup = getWakeupTime()
   sleep = "10:55 pm"
   context = {'alarms':alarmpair, 'errors':errors, 'wakeup':wakeup, 'sleep':sleep}
   return render(request, 'SmartSleeperApp/alarm.html', context)
+
+
+def getWakeupTime():
+  #Table stuff
+  dynamodb = boto3.resource('dynamodb', region_name='eu-west-1')
+  table = dynamodb.Table('SensorData')
+  response = table.query(
+      KeyConditionExpression=Key('SensorId').eq("Heartrate")
+  )
+
+  events = []
+
+  for i in reversed(response['Items']):
+
+
+
+    timestampYear = int(i['Timestamp'][0:4])
+
+    timestampMonth = int(i['Timestamp'][6:7])
+
+    timestampDay = int(i['Timestamp'][8:10])
+
+    timestamp = i['Timestamp']
+
+
+    if((month == timestampMonth) and (day == timestampDay or (day-1) == timestampDay) and (year == timestampYear)):
+      if(i['Value'] == -1):
+        hour = int(timestamp[11:13]) * 60
+        minute = int(timestamp[14:16])
+        events.append(hour+minute)
+
+  average = sum(events)/len(events)
+
+  print(average)
+
+  return(average)
+
+
+
+
+
 
 
 #Analytics Page
