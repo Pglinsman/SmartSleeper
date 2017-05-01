@@ -26,10 +26,12 @@
     <![endif]-->
 
     <!-- Javascript -->
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+
+
+ <!--    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script> -->
     
 
 </head>
@@ -37,9 +39,9 @@
 <body>
 
 
-    <div id="wrapper" class="toggled">
+    <!-- <div id="wrapper" class="toggled">
 
-        <!-- Sidebar -->
+        
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
                 <li class="sidebar-brand">
@@ -55,106 +57,30 @@
                     <a href="{% url 'settings' %}">Settings</a>
                 </li>
             </ul>
-        </div>
-        <!-- /#sidebar-wrapper -->
+        </div> -->
+
+
 
         <!-- Page Content -->
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-10">
+                    <div class="col-lg-12">
                         <h1><center>Smart Sleeper</center></h1>
-                        <h2><center><b>Overview</b></center></h2>
-                        <center>
-                        <div id="myfirstchart" style="height: 250px;"></div>
-                            <script>
-                            new Morris.Line({
-                              // ID of the element in which to draw the chart.
-                              element: 'myfirstchart',
-                              // Chart data records -- each entry in this array corresponds to a point on
-                              // the chart.
-                              data: [
-                                {% if pair %}
-                                {% for timestamp, value in pair %}
-                                { year: "{{timestamp}}", value: {{value}} },
-                                {% endfor %}
-                                {% else %}
-                                { year: "2017", value: 0 },
-                                {% endif %}
-                              ],
-                              // The name of the data record attribute that contains x-values.
-                              xkey: 'year',
-                              // A list of names of data record attributes that contain y-values.
-                              ykeys: ['value'],
-                              // Labels for the ykeys -- will be displayed when you hover over the
-                              // chart.
-                              labels: ['Value'],
-
-                              
-
-
-                            });
-                            </script>
-                        </center>
-                        </br>
-                        <p><b>Average Sleep Per Night: 7.35 Hours</b></p>
-                        <p><b>Successful Wakeups: 89%</b></p>
-
-                        <h2><center><b>Sleep Stage</b></center></h2>
-
-
-                        <center>
-                            <div id="mysecondchart" style="height: 250px;"></div>
-                                <script>
-                                new Morris.Line({
-                                  // ID of the element in which to draw the chart.
-                                  element: 'mysecondchart',
-                                  // Chart data records -- each entry in this array corresponds to a point on
-                                  // the chart.
-                                  data: [
-                                    {% if pairCycle %}
-                                    {% for timestamp, value in pairCycle %}
-                                    { year: "{{timestamp}}", value: {{value}} },
-                                    {% endfor %}
-                                    {% else %}
-                                    { year: "2017", value: 0 },
-                                    {% endif %}
-                                  ],
-                                  // The name of the data record attribute that contains x-values.
-                                  xkey: 'year',
-                                  // A list of names of data record attributes that contain y-values.
-                                  ykeys: ['value'],
-                                  // Labels for the ykeys -- will be displayed when you hover over the
-                                  // chart.
-                                  labels: ['Value'],
-
-                                  
-
-
-                                });
-                                </script>
-                            </center>
                     </div>
                 </div>
+
+                <div class="row" style="    position: absolute;
+    top: 20%;
+    left: 20%; ">
+                		<button class="button-clean"><img src="../../static/images/LineGraphButton.png" style="    width:425px; /* you can use % */
+    height: auto;"></button>
+              
+                		<button class="button-clean"><img class="img-circle" src="../../static/images/SettingsButton.png"></button>
+                	
+               	</div>
             </div>
-        <!-- /#page-content-wrapper -->
 
-    </div>
-    <!-- /#wrapper -->
-
-<!--    
-    <script src="js/jquery.js"></script>
-
-   
-    <script src="js/bootstrap.min.js"></script>
-
-    Menu Toggle Script
-    <script>
-    $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
-    </script> -->
-
+                       
 
 </body>
 
