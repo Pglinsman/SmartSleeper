@@ -127,7 +127,7 @@ def getWakeupTime():
     hour -= 12
     amOrPm = "pm"
 
-  wakeUpTime = hour + ":" + minute + " " + amOrPm
+  wakeUpTime = str(hour) + ":" + str(minute) + " " + amOrPm
 
   return(wakeUpTime)
 
