@@ -107,6 +107,8 @@ def getWakeupTime():
 
   events = []
 
+  timestamp = i['Timestamp']
+
   for i in reversed(response['Items']):
 
     if(i['Value'] == -1):
