@@ -140,13 +140,13 @@ def analytics(request):
 
     timestampDay = int(i['Timestamp'][8:10])
 
-    if(i['Value'] == -1):
+
+    if((month == timestampMonth) and (day == timestampDay or (day-1) == timestampDay) and (year == timestampYear)):
+      if(i['Value'] == -1):
       print(parse_time(i['Timestamp']))
       events.append(parse_time(i['Timestamp']))
       continue;
 
-
-    if((month == timestampMonth) and (day == timestampDay or (day-1) == timestampDay) and (year == timestampYear)):
       timeStamps.append(parse_time(i['Timestamp']))
       values.append(i['Value'])
 
