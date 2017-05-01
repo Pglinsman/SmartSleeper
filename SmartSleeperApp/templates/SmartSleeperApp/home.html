@@ -17,6 +17,7 @@
     <!-- Custom CSS -->
     <link href="../../static/css/simple-sidebar.css" rel="stylesheet">
     <link href="../../static/css/simple-css.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -69,17 +70,13 @@
                     </div>
                 </div>
 
-                <div class="row" style="    position: absolute; top: 20%;">       
-                    <div class="col-lg-6 col-sm-push-6">
-                		<a href="{% url 'analytics' %}" class="button-clean" ><img src="../../static/images/LineGraphButton.png" style="width:425px; 
-                        height: auto;"> </a>
-                        <h2><center>Analytics</center></h2>
-                        </div>
-                        <div class="col-lg-6 col-sm-push-6">
-                		<a href="{% url 'alarm' %}" class="button-clean"><img class="img-circle" src="../../static/images/SettingsButton.png" style=" width:425px; height: auto;"></a>
-                        <h2><center>Settings</center></h2>
-                        </div>
-                    </div>
+                <div class="row" style="    position: absolute;
+    top: 20%;
+    left: 20%; ">
+                		<button class="button-clean"><img src="../../static/images/LineGraphButton.png" style="    width:425px; /* you can use % */
+    height: auto;"></button>
+              
+                		<button class="button-clean"><img class="img-circle" src="../../static/images/SettingsButton.png"></button>
                 	
                	</div>
             </div>
