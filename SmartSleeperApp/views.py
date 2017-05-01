@@ -141,6 +141,7 @@ def analytics(request):
     timestampDay = int(i['Timestamp'][8:10])
 
     if(i['Value'] == -1):
+      print(parse_time(ip['Timestamp']))
       events.append(parse_time(i['Timestamp']))
       continue;
 
@@ -161,7 +162,7 @@ def analytics(request):
   context['pairCycle'] = pairCycle
   context['events'] = events
 
-  print(events)
+  #print(events)
 
 
   #context['results'] = results
