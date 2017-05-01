@@ -107,9 +107,11 @@ def getWakeupTime():
 
   events = []
 
-  timestamp = i['Timestamp']
+
 
   for i in reversed(response['Items']):
+
+    timestamp = i['Timestamp']
 
     if(i['Value'] == -1):
       hour = int(timestamp[11:13]) * 60
