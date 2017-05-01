@@ -128,12 +128,12 @@ def analytics(request):
       KeyConditionExpression=Key('SensorId').eq("Heartrate")
   )
 
+  events = []
+
   for i in reversed(response['Items']):
 
     print(i['Value'])
 
-    # if(i['Value'] == -1):
-    #   break;
 
     timestampYear = int(i['Timestamp'][0:4])
 
@@ -141,6 +141,9 @@ def analytics(request):
 
     timestampDay = int(i['Timestamp'][8:10])
 
+    if(i['Value'] == -1):
+      events.append(parse_time(i['Timestamp']))
+      continue;
 
 
     if((month == timestampMonth) and (day == timestampDay or (day-1) == timestampDay) and (year == timestampYear)):
@@ -157,6 +160,7 @@ def analytics(request):
 
   context['pair'] = pair
   context['pairCycle'] = pairCycle
+  context['events'] = events
 
 
   #context['results'] = results
