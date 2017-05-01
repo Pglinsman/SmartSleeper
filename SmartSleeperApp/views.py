@@ -194,7 +194,7 @@ def analytics(request):
 
 
     if((month == timestampMonth) and (day == timestampDay or (day-1) == timestampDay) and (year == timestampYear)):
-      if(i['Value'] == -1):
+      if(i['Value'] == -1 && day!=30):
         events.append(parse_time(i['Timestamp']))
         continue;
 
