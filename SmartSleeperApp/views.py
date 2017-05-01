@@ -161,7 +161,7 @@ def analytics(request):
   context['pairCycle'] = pairCycle
   context['events'] = events
 
-  #print(events)
+  print(events)
 
 
   #context['results'] = results
