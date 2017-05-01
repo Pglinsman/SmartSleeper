@@ -143,9 +143,8 @@ def analytics(request):
 
     if((month == timestampMonth) and (day == timestampDay or (day-1) == timestampDay) and (year == timestampYear)):
       if(i['Value'] == -1):
-      print(parse_time(i['Timestamp']))
-      events.append(parse_time(i['Timestamp']))
-      continue;
+        events.append(parse_time(i['Timestamp']))
+        continue;
 
       timeStamps.append(parse_time(i['Timestamp']))
       values.append(i['Value'])
