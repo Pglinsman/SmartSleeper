@@ -203,7 +203,7 @@ def analytics(request):
 
 
     if((month == timestampMonth) and (day == timestampDay or (day-1) == timestampDay) and (year == timestampYear)):
-      if(i['Value'] == -1):
+      if(i['Value'] == -1 || i['Value'] == -2):
         events.append(str(eastTime))
         continue;
 
