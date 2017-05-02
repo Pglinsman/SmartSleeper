@@ -204,10 +204,10 @@ def analytics(request):
 
     if((month == timestampMonth) and (day == timestampDay or (day-1) == timestampDay) and (year == timestampYear)):
       if(i['Value'] == -1):
-        events.append(parse_time(i['Timestamp']))
+        events.append(str(eastTime))
         continue;
 
-      timeStamps.append(parse_time(i['Timestamp']))
+      timeStamps.append(str(eastTime))
       values.append(i['Value'])
 
 
