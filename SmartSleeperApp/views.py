@@ -191,6 +191,8 @@ def analytics(request):
 
     eastTime = datetime.fromtimestamp(unix_time(newDate) - 14400) #4 hours
 
+    print(eastTime)
+
 
 
     timestampYear = int(eastTime.year)
