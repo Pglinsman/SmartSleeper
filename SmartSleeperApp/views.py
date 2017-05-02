@@ -189,7 +189,7 @@ def analytics(request):
     date = parse_time(i['Timestamp'])
     newDate = datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
 
-    eastTime = datetime.fromtimestamp(newDate.total_seconds() - 14400) #4 hours
+    eastTime = datetime.fromtimestamp(unix_time(newDate) - 14400) #4 hours
 
 
 
