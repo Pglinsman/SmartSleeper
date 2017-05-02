@@ -109,7 +109,7 @@
                                   "{{event}}",
                                   {% endfor %}
                                   ],
-                                  eventStrokeWidth: 5,
+                                  eventStrokeWidth: 3,
                                   goals: [2],
                                   goalLineColor: ['purple'],
                                   goalStrokeWidth: 3,
@@ -150,6 +150,13 @@
                                   // Labels for the ykeys -- will be displayed when you hover over the
                                   // chart.
                                   labels: ['Heart Rate'],
+
+                                  events: [
+                                  {% for event in events %}
+                                  "{{event}}",
+                                  {% endfor %}
+                                  ],
+                                  eventStrokeWidth: 3,
 
                                   
 
