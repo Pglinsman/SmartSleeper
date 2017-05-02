@@ -171,7 +171,9 @@ def analytics(request):
     elif(request.POST['month'] == "May"):
       month = 5
     else:
-      month = 0
+      month = 6
+
+  #####
 
   #Table stuff
   dynamodb = boto3.resource('dynamodb', region_name='eu-west-1')
@@ -184,13 +186,18 @@ def analytics(request):
 
   for i in reversed(response['Items']):
 
+    date = parse_time(i['Timestamp'])
+    newDate = datetime.strptime(date, '%d-%m-%Y %I:%M %p')
+
+    eastTime = datetime.fromtimestamp(newDate.total_seconds() - 14400) #4 hours
 
 
-    timestampYear = int(i['Timestamp'][0:4])
 
-    timestampMonth = int(i['Timestamp'][6:7])
+    timestampYear = int(eastTime.year)
 
-    timestampDay = int(i['Timestamp'][8:10])
+    timestampMonth = int(eastTime.month)
+
+    timestampDay = int(eastTime.day)
 
 
     if((month == timestampMonth) and (day == timestampDay or (day-1) == timestampDay) and (year == timestampYear)):
@@ -214,8 +221,6 @@ def analytics(request):
 
   if(day != 30):
     context['events'] = events
-
-  print(events)
 
 
   #context['results'] = results
