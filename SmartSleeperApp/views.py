@@ -195,9 +195,6 @@ def analytics(request):
 
   #####
   selectedDate = datetime.strptime(str(year) + "-" + str(month) + "-" + str(day) + " " + "17", '%Y-%m-%d %H')
-  print("Selected Date")
-  print(unix_time(selectedDate))
-  print("-----------")
 
   #Table stuff
   dynamodb = boto3.resource('dynamodb', region_name='eu-west-1')
@@ -223,9 +220,6 @@ def analytics(request):
     timestampDay = int(eastTime.day)
 
     timeDif = unix_time(eastTime) - unix_time(selectedDate)
-
-    if(timestampDay == 1):
-      print(unix_time(eastTime))
 
 
     if(timeDif > 0 and timeDif < 86400):
