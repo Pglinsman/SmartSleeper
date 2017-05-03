@@ -93,14 +93,14 @@ def alarm(request):
     print(alarm.id)
 
   alarmpair = zip(alarms, ids)
-  sleep = getSleepTime()
-  wakeup = "7:33 am"
+  sleep = getSleepTime(-1)
+  wakeup = getSleepTime(-2)
   print("Tolerance " + str(tolerance))
-  context = {'alarms':alarmpair, 'errors':errors, 'wakeup':wakeup, 'sleep':sleep, 'tolerance':tolerance}
+  context = {'alarms':alarmpair, 'errors':errors, 'wakeup':wakeup, 'sleep':sleep, 'tolerance':tolerance, 'wakeup':wakeup}
   return render(request, 'SmartSleeperApp/alarm.html', context)
 
 
-def getSleepTime():
+def getSleepTime(offset):
   #Table stuff
   dynamodb = boto3.resource('dynamodb', region_name='eu-west-1')
   table = dynamodb.Table('SensorData')
@@ -110,13 +110,16 @@ def getSleepTime():
 
   events = []
 
-
-
   for i in reversed(response['Items']):
 
     timestamp = i['Timestamp']
 
-    if(i['Value'] == -1):
+    if(i['Value'] == -1 and offset == -1):
+      hour = int(timestamp[11:13]) * 60
+      minute = int(timestamp[14:16])
+      events.append(hour+minute)
+
+    if(i['Value'] == -2 and offset == -2):
       hour = int(timestamp[11:13]) * 60
       minute = int(timestamp[14:16])
       events.append(hour+minute)
