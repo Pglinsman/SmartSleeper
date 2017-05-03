@@ -82,6 +82,7 @@ def home(request):
 
 #Alarm Page
 def alarm(request):
+  global tolerance
   context = {}
   errors = []
   alarms = []
@@ -422,6 +423,7 @@ def add_alarm(request):
 #Change tolerance
 def change_tolerance(request):
   errors = []  # A list to record messages for any errors we encounter.
+  global tolerance
   print("In change tolerance")
   if not 'time' in request.POST or not request.POST['time']:
       errors.append('You must enter an alarm to add.')
