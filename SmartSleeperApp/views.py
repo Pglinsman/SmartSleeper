@@ -94,6 +94,7 @@ def alarm(request):
   alarmpair = zip(alarms, ids)
   sleep = getSleepTime()
   wakeup = "7:33 am"
+  print("Tolerance " + str(tolerance))
   context = {'alarms':alarmpair, 'errors':errors, 'wakeup':wakeup, 'sleep':sleep, 'tolerance':tolerance}
   return render(request, 'SmartSleeperApp/alarm.html', context)
 
