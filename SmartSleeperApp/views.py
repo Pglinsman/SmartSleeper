@@ -161,6 +161,9 @@ def analytics(request):
 
   selectedDate = datetime.strptime(str(year) + "-" + str(month) + "-" + str(day) + " " + "17", '%Y-%m-%d %H')
 
+  print("Selected Time")
+  print(unix_time)
+
 
   if not 'day' in request.POST or not request.POST['day']:
     print("")
@@ -221,6 +224,9 @@ def analytics(request):
     timestampDay = int(eastTime.day)
 
     timeDif = unix_time(eastTime) - unix_time(selectedDate)
+
+    if(timeStampDay == 1):
+      print(unix_time(eastTime))
 
 
     if(timeDif > 0 and timeDif < 86400):
