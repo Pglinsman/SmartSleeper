@@ -211,15 +211,28 @@ def analytics(request):
 
   results = machine_learning(timeStamps, values)
 
+  #Calculate percents
+  numAsleep = 0
+  numREM = 0
+  for result in results:
+    if(result >= 2):
+      numAsleep += 1
+    if(result == 5):
+      numREM += 1
+
+  percentAsleep = float(numAsleep)/len(results)
+  percentREM = float(numREM)/len(results)
+
   if(len(timeStamps) > 0):
     pair = zip(timeStamps, values)
     pairCycle = zip(timeStamps, results)
 
   context['pair'] = pair
   context['pairCycle'] = pairCycle
-
-  if(day != 30):
-    context['events'] = events
+  context['percentAsleep'] = percentAsleep
+  context['percentREM'] = percentREM
+  context['events'] = events
+  context['date'] = str(month) + "/" + str(day)  + "/" + str(year)
 
 
   #context['results'] = results

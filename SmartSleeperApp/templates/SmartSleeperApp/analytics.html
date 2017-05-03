@@ -164,7 +164,6 @@
 
                                 });
                                 </script>
-                            /div
                             </center>
                         </br>
                         {% for result in results %}
@@ -199,6 +198,9 @@
                             {% csrf_token %}
                             </form>
                         </p>
+
+                        <p>You were asleep for: <b>{{percentAsleep}}%</b> of the time</p>
+                        <p>You were in REM for: <b>{{percentREM}}%</b> of the time</p>
 
                         
                     </div>
