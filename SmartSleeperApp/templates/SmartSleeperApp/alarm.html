@@ -93,6 +93,7 @@
                                     $('#datetime12').combodate({
                                         minYear: 2017,
                                         maxYear: 2018,
+                                        minuteStep: 1
                                     });
                                 });
                                 </script>
@@ -109,19 +110,10 @@
                         <p><b><u>Alarm Tolerance</u></b></p>
                         <ul id="alarm-list3">
                             <li>
-                                Hard cutoff, do not go over
-                            </li>
-                            <li>
-                                +/- 15 minutes
-                            </li>
-                            <li>
-                                +/- 30 minutes
-                            </li>
+                                Current Tolerance: {{tolerance}} minute(s)
 
-                            <li>
-                                + Create an Alarm Tolerance
-
-                                <input type="text" id="time" data-format="HH:mm" data-template="HH : mm" name="datetime">
+                                <form action="{% url 'change-tolerance' %}" method="post">
+                                <input type="text" id="time" data-format="mm" data-template="mm" name="time">
                                 <script>
                                 $(function(){
                                     $('#time').combodate({
@@ -131,7 +123,11 @@
                                 });
                                 </script>
 
+                                {% csrf_token %}
+
                                 <input type="submit" value="Submit">
+                                </form>
+
                             </li>
                         </ul>
                         </br>

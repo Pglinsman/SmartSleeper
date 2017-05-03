@@ -22,6 +22,7 @@ PATH = "C:\\" + "Users\Patrick\Desktop\18549\SmartSleeperWebPage\SmartSleeper\Sm
 
 epoch = datetime.utcfromtimestamp(0)
 timeOffset = 0 #14400
+tolerance = 1
 
 def unix_time(dt):
     return (dt - epoch).total_seconds()
@@ -93,7 +94,7 @@ def alarm(request):
   alarmpair = zip(alarms, ids)
   sleep = getSleepTime()
   wakeup = "7:33 am"
-  context = {'alarms':alarmpair, 'errors':errors, 'wakeup':wakeup, 'sleep':sleep}
+  context = {'alarms':alarmpair, 'errors':errors, 'wakeup':wakeup, 'sleep':sleep, 'tolerance':tolerance}
   return render(request, 'SmartSleeperApp/alarm.html', context)
 
 
@@ -394,7 +395,7 @@ def check_alarm(request):
     timeDelta = abs(unix_time(currentTime) - float(alarm.text)) - 14400 #FIX THIS LATER
     #If within 1 minute
     print(timeDelta)
-    if(abs(timeDelta) < 60):
+    if(abs(timeDelta) < (tolerance*60)):
       print("TIME TO WAKE UP!")
       alarm.delete()
       led_on(request)
@@ -416,15 +417,18 @@ def add_alarm(request):
         new_alarm.save()
 
     return alarm(request)
-    # alarms = []
-    # ids = []
-    # for alarm in Alarm.objects.all():
-    #   alarms.append(datetime.fromtimestamp(float(alarm.text)))
-    #   ids.append(alarm.id)
 
-    # alarmpair = zip(alarms, ids)
-    # context = {'alarms':alarmpair, 'errors':errors}
-    # return render(request, 'SmartSleeperApp/alarm.html', context)
+#Change tolerance
+def change_tolerance(request):
+  errors = []  # A list to record messages for any errors we encounter.
+  if 'time' in request.POST or not request.POST['time']:
+      errors.append('You must enter an alarm to add.')
+  else:
+      if(request.POST['time'].isdigit()):
+          tolerance = request.POST['time']
+
+  return alarm(request)
+
 
 #Remove alarm
 def delete_alarm(request, item_id):
