@@ -159,11 +159,6 @@ def analytics(request):
   month = int(now.month)
   day = int(now.day)
 
-  selectedDate = datetime.strptime(str(year) + "-" + str(month) + "-" + str(day) + " " + "17", '%Y-%m-%d %H')
-
-  print("Selected Time")
-  print(unix_time(selectedDate))
-
 
   if not 'day' in request.POST or not request.POST['day']:
     print("")
@@ -199,6 +194,7 @@ def analytics(request):
       month = 5
 
   #####
+  selectedDate = datetime.strptime(str(year) + "-" + str(month) + "-" + str(day) + " " + "17", '%Y-%m-%d %H')
 
   #Table stuff
   dynamodb = boto3.resource('dynamodb', region_name='eu-west-1')
