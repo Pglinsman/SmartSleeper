@@ -421,9 +421,11 @@ def add_alarm(request):
 #Change tolerance
 def change_tolerance(request):
   errors = []  # A list to record messages for any errors we encounter.
-  if 'time' in request.POST or not request.POST['time']:
+  print("In change tolerance")
+  if not 'time' in request.POST or not request.POST['time']:
       errors.append('You must enter an alarm to add.')
   else:
+      print("In a good if statement")
       if(request.POST['time'].isdigit()):
           tolerance = request.POST['time']
 
