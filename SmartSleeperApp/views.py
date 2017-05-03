@@ -426,8 +426,11 @@ def change_tolerance(request):
       errors.append('You must enter an alarm to add.')
   else:
       print("In a good if statement")
+      print(request.POST['time'])
       if(request.POST['time'].isdigit()):
-          tolerance = request.POST['time']
+          print("Time")
+
+          tolerance = int(request.POST['time'])
 
   return alarm(request)
 
