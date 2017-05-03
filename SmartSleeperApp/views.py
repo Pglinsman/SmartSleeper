@@ -220,8 +220,8 @@ def analytics(request):
     if(result == 5):
       numREM += 1
 
-  percentAsleep = float(numAsleep)/len(results)
-  percentREM = float(numREM)/len(results)
+  percentAsleep = float(numAsleep)/max(1, len(results))
+  percentREM = float(numREM)/max(1, len(results))
 
   if(len(timeStamps) > 0):
     pair = zip(timeStamps, values)
