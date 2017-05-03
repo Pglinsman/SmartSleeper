@@ -159,7 +159,7 @@ def analytics(request):
   month = int(now.month)
   day = int(now.day)
 
-  selectedDate = datetime.strptime(year + "-" + month + "-" + day + " " + "17", '%Y-%m-%d %H')
+  selectedDate = datetime.strptime(str(year) + "-" + str(month) + "-" + str(day) + " " + "17", '%Y-%m-%d %H')
 
 
   if not 'day' in request.POST or not request.POST['day']:
