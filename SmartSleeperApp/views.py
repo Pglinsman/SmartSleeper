@@ -159,6 +159,8 @@ def analytics(request):
   month = int(now.month)
   day = int(now.day)
 
+  selectedDate = datetime.strptime(year + "-" + month + "-" + day + " " + "17", '%Y-%m-%d %H')
+
 
   if not 'day' in request.POST or not request.POST['day']:
     print("")
@@ -166,12 +168,32 @@ def analytics(request):
     #Fix this nonsense at some point
     year = int(request.POST['year'])
     day = int(request.POST['day']) 
-    if(request.POST['month'] == "Apr"):
+    if(request.POST['month'] == "Jan"):
+      month = 1
+    elif(request.POST['month'] == "Feb"):
+      month = 2
+    elif(request.POST['month'] == "Mar"):
+      month = 3
+    elif(request.POST['month'] == "Apr"):
       month = 4
     elif(request.POST['month'] == "May"):
       month = 5
-    else:
+    elif(request.POST['month'] == "Jun"):
       month = 6
+    elif(request.POST['month'] == "Jul"):
+      month = 7
+    elif(request.POST['month'] == "Aug"):
+      month = 8
+    elif(request.POST['month'] == "Sep"):
+      month = 9
+    elif(request.POST['month'] == "Oct"):
+      month = 10
+    elif(request.POST['month'] == "Nov"):
+      month = 11
+    elif(request.POST['month'] == "Dec"):
+      month = 12
+    else:
+      month = 5
 
   #####
 
@@ -198,8 +220,10 @@ def analytics(request):
 
     timestampDay = int(eastTime.day)
 
+    timeDif = unix_time(eastTime) - unix_time(selectedDate)
 
-    if((month == timestampMonth) and (day == timestampDay or (day-1) == timestampDay) and (year == timestampYear)):
+
+    if(timeDif > 0 and timeDif < 86400):
       if(i['Value'] == -1 or i['Value'] == -2):
         events.append(str(eastTime))
         continue;
