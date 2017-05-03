@@ -229,8 +229,8 @@ def analytics(request):
 
   context['pair'] = pair
   context['pairCycle'] = pairCycle
-  context['percentAsleep'] = percentAsleep
-  context['percentREM'] = percentREM
+  context['percentAsleep'] = "%.2f" % (percentAsleep)
+  context['percentREM'] = "%.2f" % (percentREM)
   context['events'] = events
   context['dateInfo'] = str(month) + "/" + str(day)  + "/" + str(year)
 
