@@ -162,7 +162,7 @@ def analytics(request):
   selectedDate = datetime.strptime(str(year) + "-" + str(month) + "-" + str(day) + " " + "17", '%Y-%m-%d %H')
 
   print("Selected Time")
-  print(unix_time)
+  print(unix_time(selectedDate))
 
 
   if not 'day' in request.POST or not request.POST['day']:
