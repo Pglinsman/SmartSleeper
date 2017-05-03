@@ -232,7 +232,7 @@ def analytics(request):
   context['percentAsleep'] = percentAsleep
   context['percentREM'] = percentREM
   context['events'] = events
-  context['date'] = str(month) + "/" + str(day)  + "/" + str(year)
+  context['dateInfo'] = str(month) + "/" + str(day)  + "/" + str(year)
 
 
   #context['results'] = results
