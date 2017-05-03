@@ -225,7 +225,7 @@ def analytics(request):
 
     timeDif = unix_time(eastTime) - unix_time(selectedDate)
 
-    if(timeStampDay == 1):
+    if(timestampDay == 1):
       print(unix_time(eastTime))
 
 
