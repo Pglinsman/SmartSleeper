@@ -42,41 +42,6 @@ def home(request):
   pair = []
   pairCycle = []
 
-  #Table stuff
-  dynamodb = boto3.resource('dynamodb', region_name='eu-west-1')
-  table = dynamodb.Table('SensorData')
-  response = table.query(
-      KeyConditionExpression=Key('SensorId').eq("Heartrate")
-  )
-
-
-  #Gets dates
-  now = datetime.now()
-  month = int(now.month)
-  day = int(now.day)
-
-  #Some awful logic to show today and yesterday - wont work at end of a month
-  for i in reversed(response['Items']):
-    if(i['Value'] == -1):
-      break;
-
-    timestampMonth = int(i['Timestamp'][6:7])
-    timestampDay = int(i['Timestamp'][8:10])
-    if(timestampDay != 24):
-      # if(month == timestampMonth and (day == timestampDay or (day-1) == timestampDay)):
-      timeStamps.append(parse_time(i['Timestamp']))
-      values.append(i['Value'])
-
-
-  #A way to return data
-  results = machine_learning(timeStamps, values)
-
-  if(len(timeStamps) > 0):
-    pair = zip(timeStamps, values)
-    pairCycle = zip(timeStamps, results)
-
-  context['pair'] = pair
-  context['pairCycle'] = pairCycle
 
   return render(request, 'SmartSleeperApp/home.html', context)
 
