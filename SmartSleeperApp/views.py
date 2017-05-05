@@ -375,7 +375,6 @@ def machine_learning(timeStamps, values, initialTime):
 
   testArr = []
   for i in range(0, len(timeStamps)):
-    #timeInSeconds = convert(timeStamps[i])
     newDate = datetime.strptime(timeStamps[i], '%Y-%m-%d %H:%M:%S')
     timeInSeconds = unix_time(newDate)
     elapsedTime = (timeInSeconds - initialTime)
@@ -391,7 +390,8 @@ def machine_learning(timeStamps, values, initialTime):
 
   #Fixes the initial time
   for i in range(0, len(timeStamps)):
-    timeInSeconds = convert(timeStamps[i])
+    newDate = datetime.strptime(timeStamps[i], '%Y-%m-%d %H:%M:%S')
+    timeInSeconds = unix_time(newDate)
     elapsedTime = abs(timeInSeconds - initialTime)
     if(results[i] > 1 and elapsedTime < 1800):
       results[i] = 1
@@ -400,20 +400,6 @@ def machine_learning(timeStamps, values, initialTime):
   #print(results)
   return results
 
-  # df = pd.DataFrame(test)
-  # df.to_csv(r'C:\Users\Patrick\Desktop\18549\SmartSleeperWebPage\SmartSleeper\SmartSleeperApp\predictions.csv')
-
-#date time conversion
-def convert(timestamp):
-  year = int(timestamp[0:4])
-  month = int(timestamp[5:7])
-  day = int(timestamp[8:10])
-  hour = int(timestamp[11:13])
-  minute = int(timestamp[14:16])
-  second = int(timestamp[17:19])
-  newDate = datetime(year, month, day, hour, minute, second)
-  timeInSeconds = time.mktime(newDate.timetuple())
-  return timeInSeconds
 
 #Checks alarm
 @csrf_exempt
