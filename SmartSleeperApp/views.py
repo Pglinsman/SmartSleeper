@@ -177,6 +177,7 @@ def analytics(request):
   events = []
   results = []
   tempTimeStamps = []
+  tempValues = []
   lastTime = 0
 
   for i in reversed(response['Items']):
@@ -203,14 +204,16 @@ def analytics(request):
         events.append(str(eastTime))
         if(i['Value'] == -1):
           initialTime = unix_time(eastTime)
-          for result in machine_learning(tempTimeStamps, values, initialTime):
+          for result in machine_learning(tempTimeStamps, tempValues, initialTime):
             results.append(result)
           timeStamps += tempTimeStamps
+          values += tempValues
           tempTimeStamps = []
+          tempValues = []
         continue;
 
       tempTimeStamps.append(str(eastTime))
-      values.append(i['Value'])
+      tempValues.append(i['Value'])
 
 
 
@@ -219,6 +222,7 @@ def analytics(request):
 
   #Calculate percents
   timeStamps += tempTimeStamps
+  values += tempValues
   if((len(results) == 0) and (len(timeStamps) != 0)):
     for result in machine_learning(tempTimeStamps, values, lastTime):
       results.append(result)
