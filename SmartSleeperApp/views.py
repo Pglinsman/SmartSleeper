@@ -128,7 +128,7 @@ def getSleepTime(offset):
   if(minute == 0):
     addZeroMinute = "00"
 
-  sleepTime = str(hour) + ":" + str(minute) + addZeroMinute + " " + amOrPm
+  sleepTime = str(hour) + ":" + addZeroMinute + str(minute) + " " + amOrPm
 
   return(sleepTime)
 
