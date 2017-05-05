@@ -119,6 +119,8 @@ def getSleepTime(offset):
     hour = 12
     amOrPm = "am"
 
+  addZeroMinute = ""
+
   if(minute<10):
     addZeroMinute = "0"
 
