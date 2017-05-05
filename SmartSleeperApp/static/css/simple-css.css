@@ -10,8 +10,14 @@ h2 {
   font-weight: bold;
 }
 
+body{
+	font-family: 'Roboto', sans-serif;
+	font-size: 18px;
+}
+
 p {
 	font-family: 'Roboto', sans-serif;
+	font-size: 22px;
 }
 
 .img-circle {

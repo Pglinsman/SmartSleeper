@@ -225,7 +225,11 @@ def analytics(request):
 
   numAsleep = 0
   numREM = 0
-
+  cycleZero = 0
+  cycleOne = 0
+  cycleTwo = 0
+  cycleThree = 0
+  cycleFour = 0
 
   for result in results:
     if(result >= 2):
@@ -233,10 +237,25 @@ def analytics(request):
     if(result == 5):
       numREM += 1
     if(result == 0):
+      cycleZero += 1
+    if(result == 1):
+      cycleOne += 1
+    if(result == 2):
+      cycleTwo += 1
+    if(result == 3):
+      cycleThree += 1
+    if(results == 4):
+      cycleFour += 1
+
 
 
   percentAsleep = 100 * float(numAsleep)/max(1, len(results))
   percentREM = 100 * float(numREM)/max(1, len(results))
+  percentZero = 100 * float(cycleZero)/max(1, len(results))
+  percentOne = 100 * float(cycleOne)/max(1, len(results))
+  percentTwo = 100 * float(cycleTwo)/max(1, len(results))
+  percentThree = 100 * float(cycleThree)/max(1, len(results))
+  percentFour = 100 * float(cycleFour)/max(1, len(results))
 
   if(len(timeStamps) > 0):
     pair = zip(timeStamps, values)
@@ -246,6 +265,11 @@ def analytics(request):
   context['pairCycle'] = pairCycle
   context['percentAsleep'] = "%.2f" % (percentAsleep)
   context['percentREM'] = "%.2f" % (percentREM)
+  context['percentZero'] = "%.2f" % (percentZero)
+  context['percentOne'] = "%.2f" % (percentOne)
+  context['percentTwo'] = "%.2f" % (percentTwo)
+  context['percentThree'] = "%.2f" % (percentThree)
+  context['percentFour'] = "%.2f" % (percentFour)
   context['events'] = events
   context['dateInfo'] = str(month) + "/" + str(day)  + "/" + str(year)
 
