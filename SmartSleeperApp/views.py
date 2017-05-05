@@ -329,7 +329,7 @@ def led_on(request):
       ReturnValues="UPDATED_NEW"
   )
 
-  return render(request, 'SmartSleeperApp/settings.html', context)
+  return render(request, 'SmartSleeperApp/alarm.html', context)
 
 #LED Off
 def led_off(request):
@@ -358,7 +358,7 @@ def led_off(request):
       ReturnValues="UPDATED_NEW"
   )
 
-  return render(request, 'SmartSleeperApp/settings.html', context)
+  return render(request, 'SmartSleeperApp/alarm.html', context)
 
 
 
