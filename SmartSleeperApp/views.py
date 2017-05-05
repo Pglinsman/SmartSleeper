@@ -66,6 +66,7 @@ def alarm(request):
 
 
 def getSleepTime(offset):
+  
   #Table stuff
   dynamodb = boto3.resource('dynamodb', region_name='eu-west-1')
   table = dynamodb.Table('SensorData')
@@ -92,6 +93,8 @@ def getSleepTime(offset):
       events.append(hour+minute)
 
   average = sum(events)/len(events)
+
+  print(average)
 
   hour = average/60
   minute = average%60
@@ -331,7 +334,7 @@ def led_on(request):
       ReturnValues="UPDATED_NEW"
   )
 
-  return render(request, 'SmartSleeperApp/alarm.html', context)
+  return alarm(request)
 
 #LED Off
 def led_off(request):
@@ -360,7 +363,7 @@ def led_off(request):
       ReturnValues="UPDATED_NEW"
   )
 
-  return render(request, 'SmartSleeperApp/alarm.html', context)
+  return alarm(request)
 
 
 
