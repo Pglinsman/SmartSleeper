@@ -382,6 +382,8 @@ def machine_learning(timeStamps, values, initialTime):
     #print(elapsedTime)
     arr = [elapsedTime, values[i]]
     testArr.append(arr)
+    print("Date is: " + str(newDate))
+    print("Elapsed time is: " + str(elapsedTime))
 
   results = []
   if(len(testArr) != 0):
@@ -396,7 +398,6 @@ def machine_learning(timeStamps, values, initialTime):
 
   #test['predictions'] = results
   #print(results)
-
   return results
 
   # df = pd.DataFrame(test)
