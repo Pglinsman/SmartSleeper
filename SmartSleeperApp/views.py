@@ -105,10 +105,10 @@ def getSleepTime(offset):
 
   print(average)
 
-  hour = math.floor(average/60)
+  hour = int(math.floor(average/60))
   minute = average%60
   if(hour < 0):
-    hour = 11 - hour
+    hour = 11 + hour
     minute = 60 - minute
     amOrPm = "pm"
   elif(hour > 0):
