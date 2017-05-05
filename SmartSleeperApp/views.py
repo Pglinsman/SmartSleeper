@@ -247,7 +247,12 @@ def analytics(request):
     if(results == 4):
       cycleFour += 1
 
-
+  # AVERAGES
+  # 1: 4-5%
+  # 2: 45-55%
+  # 3: 4-6%
+  # 4: 12-15%
+  # 5: 20-25%
 
   percentAsleep = 100 * float(numAsleep)/max(1, len(results))
   percentREM = 100 * float(numREM)/max(1, len(results))
@@ -256,6 +261,12 @@ def analytics(request):
   percentTwo = 100 * float(cycleTwo)/max(1, len(results))
   percentThree = 100 * float(cycleThree)/max(1, len(results))
   percentFour = 100 * float(cycleFour)/max(1, len(results))
+  averageOne = "5%"
+  averageTwo = "50%"
+  averageThree = "5%"
+  averageFour = "13.5%"
+  averageREM = "22.5%"
+
 
   if(len(timeStamps) > 0):
     pair = zip(timeStamps, values)
@@ -270,6 +281,11 @@ def analytics(request):
   context['percentTwo'] = "%.2f" % (percentTwo)
   context['percentThree'] = "%.2f" % (percentThree)
   context['percentFour'] = "%.2f" % (percentFour)
+  context['averageOne'] = averageOne
+  context['averageTwo'] = averageTwo
+  context['averageThree'] = averageThree
+  context['averageFour'] = averageFour
+  context['averageREM'] = averageREM
   context['events'] = events
   context['dateInfo'] = str(month) + "/" + str(day)  + "/" + str(year)
 
