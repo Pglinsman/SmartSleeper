@@ -202,10 +202,11 @@ def analytics(request):
           initialTime = unix_time(eastTime)
           for result in machine_learning(timeStamps, values, initialTime):
             results.append(result)
-          timeStamps = []
+          timeStamps += tempTimeStamps
+          tempTimeStamps = []
         continue;
 
-      timeStamps.append(str(eastTime))
+      tempTimeStamps.append(str(eastTime))
       values.append(i['Value'])
 
 
@@ -213,6 +214,7 @@ def analytics(request):
   # results += machine_learning(timeStamps, values)
 
   #Calculate percents
+  timeStamps += tempTimeStamps
   numAsleep = 0
   numREM = 0
   for result in results:
