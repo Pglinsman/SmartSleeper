@@ -225,11 +225,15 @@ def analytics(request):
 
   numAsleep = 0
   numREM = 0
+
+
   for result in results:
     if(result >= 2):
       numAsleep += 1
     if(result == 5):
       numREM += 1
+    if(result == 0):
+
 
   percentAsleep = 100 * float(numAsleep)/max(1, len(results))
   percentREM = 100 * float(numREM)/max(1, len(results))
@@ -331,7 +335,9 @@ def machine_learning(timeStamps, values, initialTime):
 
   testArr = []
   for i in range(0, len(timeStamps)):
-    timeInSeconds = convert(timeStamps[i])
+    #timeInSeconds = convert(timeStamps[i])
+    newDate = datetime.strptime(timeStamps[i], '%Y-%m-%d %H:%M:%S')
+    timeInSeconds = unix_time(newDate)
     elapsedTime = (timeInSeconds - initialTime)
     #print(elapsedTime)
     arr = [elapsedTime, values[i]]
@@ -345,7 +351,7 @@ def machine_learning(timeStamps, values, initialTime):
   for i in range(0, len(timeStamps)):
     timeInSeconds = convert(timeStamps[i])
     elapsedTime = abs(timeInSeconds - initialTime)
-    if(results[i] > 1 and elapsedTime < 1200):
+    if(results[i] > 1 and elapsedTime < 1800):
       results[i] = 1
 
   #test['predictions'] = results
