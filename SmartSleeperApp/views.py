@@ -235,7 +235,8 @@ def analytics(request):
 
         if(i['Value'] == -1):
           initialTime = unix_time(eastTime)
-          results += machine_learning(timeStamps, values, initialTime)
+          for result in machine_learning(timeStamps, values, initialTime):
+            results.append(result)
           timeStamps = []
         continue;
 
