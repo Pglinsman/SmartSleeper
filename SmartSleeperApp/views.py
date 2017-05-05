@@ -198,11 +198,11 @@ def analytics(request):
     if(timeDif > 0 and timeDif < 86400):
       if(i['Value'] == -1 or i['Value'] == -2):
         events.append(str(eastTime))
-
         if(i['Value'] == -1):
           initialTime = unix_time(eastTime)
           for result in machine_learning(timeStamps, values, initialTime):
             results.append(result)
+            print(results)
           timeStamps += tempTimeStamps
           tempTimeStamps = []
         continue;
