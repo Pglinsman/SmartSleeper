@@ -176,6 +176,7 @@ def analytics(request):
 
   events = []
   results = []
+  tempTimeStamps = []
 
   for i in reversed(response['Items']):
 
