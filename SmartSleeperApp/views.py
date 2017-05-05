@@ -7,6 +7,7 @@ from boto3.dynamodb.conditions import Key, Attr
 from django.shortcuts import render
 from datetime import datetime
 import time
+import math
 from dateutil import parser
 # Imports the Alarm class
 from SmartSleeperApp.models import *
@@ -83,29 +84,40 @@ def getSleepTime(offset):
     eastTime = datetime.fromtimestamp(unix_time(newDate) - 14400) #4 hours
 
     if(i['Value'] == -1 and offset == -1):
-      hour = int(eastTime.hour) * 60
+      hour = int(eastTime.hour)
       minute = int(eastTime.minute)
+      if(hour>12):
+        hour = (-12 + hour%12)
+        minute *= -1
+      hour *= 60
       events.append(hour+minute)
 
     if(i['Value'] == -2 and offset == -2):
-      hour = int(eastTime.hour) * 60
+      hour = int(eastTime.hour)
       minute = int(eastTime.minute)
+      if(hour>12):
+        hour = (-12 + hour%12)
+        minute *= -1
+      hour *= 60
       events.append(hour+minute)
 
   average = sum(events)/len(events)
 
   print(average)
 
-  hour = average/60
+  hour = math.floor(average/60)
   minute = average%60
-  amOrPm = "am"
-  addZeroMinute = ""
-  if(hour>12):
-    hour -= 12
+  if(hour < 0):
+    hour = 11 - hour
+    minute = 60 - minute
     amOrPm = "pm"
-
-  if(hour == 0):
+  elif(hour > 0):
+    hour = hour
+    minute = minute
+    amOrPm = "am"
+  else:
     hour = 12
+    amOrPm = "am"
 
   if(minute<10):
     addZeroMinute = "0"
