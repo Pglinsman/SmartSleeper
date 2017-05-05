@@ -77,16 +77,18 @@ def getSleepTime(offset):
 
   for i in reversed(response['Items']):
 
-    timestamp = i['Timestamp']
+    date = parse_time(i['Timestamp'])
+    newDate = datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
+    eastTime = datetime.fromtimestamp(unix_time(newDate) - 14400) #4 hours
 
     if(i['Value'] == -1 and offset == -1):
-      hour = int(timestamp[11:13]) * 60
-      minute = int(timestamp[14:16])
+      hour = int(eastTime.hour)
+      minute = int(eastTime.minute)
       events.append(hour+minute)
 
     if(i['Value'] == -2 and offset == -2):
-      hour = int(timestamp[11:13]) * 60
-      minute = int(timestamp[14:16])
+      hour = int(eastTime.hour)
+      minute = int(eastTime.minute)
       events.append(hour+minute)
 
   average = sum(events)/len(events)
