@@ -66,7 +66,7 @@ def alarm(request):
 
 
 def getSleepTime(offset):
-  
+
   #Table stuff
   dynamodb = boto3.resource('dynamodb', region_name='eu-west-1')
   table = dynamodb.Table('SensorData')
@@ -83,12 +83,12 @@ def getSleepTime(offset):
     eastTime = datetime.fromtimestamp(unix_time(newDate) - 14400) #4 hours
 
     if(i['Value'] == -1 and offset == -1):
-      hour = int(eastTime.hour)
+      hour = int(eastTime.hour) * 60
       minute = int(eastTime.minute)
       events.append(hour+minute)
 
     if(i['Value'] == -2 and offset == -2):
-      hour = int(eastTime.hour)
+      hour = int(eastTime.hour) * 60
       minute = int(eastTime.minute)
       events.append(hour+minute)
 
