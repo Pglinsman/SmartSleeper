@@ -200,7 +200,7 @@ def analytics(request):
         events.append(str(eastTime))
         if(i['Value'] == -1):
           initialTime = unix_time(eastTime)
-          for result in machine_learning(timeStamps, values, initialTime):
+          for result in machine_learning(tempTimeStamps, values, initialTime):
             results.append(result)
             print(results)
           timeStamps += tempTimeStamps
