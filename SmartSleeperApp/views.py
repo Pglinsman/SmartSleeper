@@ -210,6 +210,7 @@ def analytics(request):
   )
 
   events = []
+  results = []
 
   for i in reversed(response['Items']):
 
@@ -231,6 +232,11 @@ def analytics(request):
     if(timeDif > 0 and timeDif < 86400):
       if(i['Value'] == -1 or i['Value'] == -2):
         events.append(str(eastTime))
+
+        if(i['Value'] == -1):
+          initialTime = unix_time(eastTime)
+          results += machine_learning(timeStamps, values, initialTime)
+          timeStamps = []
         continue;
 
       timeStamps.append(str(eastTime))
@@ -238,7 +244,7 @@ def analytics(request):
 
 
 
-  results = machine_learning(timeStamps, values)
+  # results += machine_learning(timeStamps, values)
 
   #Calculate percents
   numAsleep = 0
@@ -342,15 +348,10 @@ rf = RandomForestClassifier(n_estimators=50) # initialize
 rf.fit(trainArr, trainRes) 
 
 #ML Stuff
-def machine_learning(timeStamps, values):
+def machine_learning(timeStamps, values, initialTime):
 
 
   #[0][0] is elapsed time, [0][1] is the ihr at the time
-  initialTime = 0
-
-  if(len(timeStamps) > 0): 
-    initialTime = convert(timeStamps[len(timeStamps) - 1])
-
 
   testArr = []
   for i in range(0, len(timeStamps)):
