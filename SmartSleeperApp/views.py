@@ -369,6 +369,8 @@ rf.fit(trainArr, trainRes)
 
 #ML Stuff
 def machine_learning(timeStamps, values, initialTime):
+  print(" ")
+  print("Independent Machine Learning Call")
 
 
   #[0][0] is elapsed time, [0][1] is the ihr at the time
@@ -381,12 +383,19 @@ def machine_learning(timeStamps, values, initialTime):
     #print(elapsedTime)
     arr = [elapsedTime, values[i]]
     testArr.append(arr)
-    print("Date is: " + str(newDate))
-    print("Elapsed time is: " + str(elapsedTime))
+    print("Elapsed time is: " + str(elapsedTime) + ", Value is: " + str(values[i]))
+
+ 
+
+
+
 
   results = []
   if(len(testArr) != 0):
     results = rf.predict(testArr)
+
+ 
+
 
   #Fixes the initial time
   for i in range(0, len(timeStamps)):
