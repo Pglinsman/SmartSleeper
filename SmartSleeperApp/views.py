@@ -308,7 +308,8 @@ def analytics(request):
   averageREM = "22.5%"
 
   #CHANGE LATER FIX
-  results[len(results) - 1] = 5
+  print(results)
+  # results[len(results) - 1] = 5
 
 
   if(len(timeStamps) > 0):
