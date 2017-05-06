@@ -458,7 +458,7 @@ def check_alarm(request):
   turnOffAlarm += 1
   sleepStage = 0
 
-  if(len(Alarm.objects.all())):
+  if(len(Alarm.objects.all()) == 0):
     print("No alarms set")
     return render(request, 'SmartSleeperApp/secret.html', context)
 
