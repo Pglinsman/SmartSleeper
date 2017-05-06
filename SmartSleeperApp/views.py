@@ -307,10 +307,10 @@ def analytics(request):
   averageFour = "13.5%"
   averageREM = "22.5%"
 
-  #CHANGE LATER FIX
-  if(len(results) > 0):
-    results[0] = 5
-  print(results)
+  # #CHANGE LATER FIX
+  # if(len(results) > 0):
+  #   results[0] = 5
+  # print(results)
 
   if(len(timeStamps) > 0):
     pair = zip(timeStamps, values)
