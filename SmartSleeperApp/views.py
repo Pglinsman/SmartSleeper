@@ -148,13 +148,21 @@ def analytics(request):
   values = []
   pair = []
   pairCycle = []
-  now = datetime.now()
+  now = datetime.now(pytz.timezone('US/Eastern'))
   year = int(now.year)
   month = int(now.month)
   day = int(now.day)
 
   print(day)
 
+  #####
+  selectedDate = datetime.strptime(str(year) + "-" + str(month) + "-" + str(day) + " " + "17", '%Y-%m-%d %H')
+
+  correctedSelectedDate = datetime.fromtimestamp(unix_time(selectedDate) - 14400)
+
+  year = correctedSelectedDate.year
+  month = correctedSelectedDate.month
+  day = correctedSelectedDate.day
 
   if not 'day' in request.POST or not request.POST['day']:
     print("")
@@ -189,17 +197,12 @@ def analytics(request):
     else:
       month = 5
 
+
+
+
   print(day)
   print(" ")
 
-  #####
-  selectedDate = datetime.strptime(str(year) + "-" + str(month) + "-" + str(day) + " " + "17", '%Y-%m-%d %H')
-
-  # correctedSelectedDate = datetime.fromtimestamp(unix_time(selectedDate) - 14400)
-
-  # year = correctedSelectedDate.year
-  # month = correctedSelectedDate.month
-  # day = correctedSelectedDate.day
 
   #Table stuff
   dynamodb = boto3.resource('dynamodb', region_name='eu-west-1')
@@ -466,7 +469,7 @@ def check_alarm(request):
       alarm.delete()
       led_on(request)
 
-  if(turnOffAlarm == 3):
+  if(turnOffAlarm == 8):
     led_off(request)
 
   return render(request, 'SmartSleeperApp/secret.html', context)
