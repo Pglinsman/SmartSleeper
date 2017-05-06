@@ -250,7 +250,7 @@ def analytics(request):
 
       tempTimeStamps.append(str(eastTime))
       roundedValue = "%.2f" % (i['Value'])
-      roundedValue = int(roundedValue)
+      roundedValue = float(roundedValue)
       tempValues.append(roundedValue)
 
 
