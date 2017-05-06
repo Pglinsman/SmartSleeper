@@ -309,7 +309,7 @@ def analytics(request):
 
   #CHANGE LATER FIX
   if(len(results) > 0):
-    results[len(results) - 1] = 5
+    results[0] = 5
   print(results)
 
   if(len(timeStamps) > 0):
