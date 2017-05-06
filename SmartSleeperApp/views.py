@@ -61,7 +61,16 @@ def alarm(request):
   alarmpair = zip(alarms, ids)
   sleep = getSleepTime(-1)
   wakeup = getSleepTime(-2)
-  context = {'alarms':alarmpair, 'errors':errors, 'wakeup':wakeup, 'sleep':sleep, 'tolerance':tolerance, 'wakeup':wakeup}
+  response = table.query(
+      KeyConditionExpression=Key('SensorId').eq("Alarm")
+  )
+
+  alarmValue = ""
+
+  for i in response['Items']:
+    alarmValue = i['Value']
+
+  context = {'alarms':alarmpair, 'errors':errors, 'wakeup':wakeup, 'sleep':sleep, 'tolerance':tolerance, 'wakeup':wakeup, 'alarmValue':alarmValue}
   return render(request, 'SmartSleeperApp/alarm.html', context)
 
 
@@ -446,6 +455,10 @@ def check_alarm(request):
   currentTime = datetime.today()
   turnOffAlarm += 1
   sleepStage = 0
+
+  if(Alarm.objects.all().count == 0):
+    print("No alarms set")
+    return render(request, 'SmartSleeperApp/secret.html', context)
 
   #Table stuff
   dynamodb = boto3.resource('dynamodb', region_name='eu-west-1')
