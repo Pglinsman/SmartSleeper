@@ -93,7 +93,7 @@ def getSleepTime(offset):
     newDate = datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
     eastTime = datetime.fromtimestamp(unix_time(newDate) - 14400) #4 hours
 
-    if(eastTime.day == 5):
+    if(eastTime.day == 5 or eastTime.day == 6):
       continue
 
     if(i['Value'] == -1 and offset == -1):
@@ -306,6 +306,9 @@ def analytics(request):
   averageThree = "5%"
   averageFour = "13.5%"
   averageREM = "22.5%"
+
+  #CHANGE LATER FIX
+  results[len(results) - 1] = 5
 
 
   if(len(timeStamps) > 0):
