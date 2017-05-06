@@ -457,7 +457,7 @@ def check_alarm(request):
   currentTime = datetime.today()
   turnOffAlarm += 1
   sleepStage = 0
-  print(Alarm.objects.all().count)
+  print(len(Alarm.objects.all()))
 
   if(Alarm.objects.all().count == 0):
     print("No alarms set")
