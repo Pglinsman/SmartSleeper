@@ -225,13 +225,6 @@ def analytics(request):
 
     eastTime = datetime.fromtimestamp(unix_time(newDate) - 14400) #4 hours
 
-
-    timestampYear = int(eastTime.year)
-
-    timestampMonth = int(eastTime.month)
-
-    timestampDay = int(eastTime.day)
-
     timeDif = unix_time(eastTime) - unix_time(selectedDate)
 
     lastTime = unix_time(eastTime)
@@ -460,12 +453,53 @@ def check_alarm(request):
   context = {}
   currentTime = datetime.today()
   turnOffAlarm += 1
+  sleepStage = 0
+
+  #Table stuff
+  dynamodb = boto3.resource('dynamodb', region_name='eu-west-1')
+  table = dynamodb.Table('SensorData')
+  response = table.query(
+      KeyConditionExpression=Key('SensorId').eq("Heartrate")
+  )
+
+  timeStamps = []
+  values = []
+  results = []
+
+  #From analytics
+  for i in reversed(response['Items']):
+
+    date = parse_time(i['Timestamp'])
+    newDate = datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
+    eastTime = datetime.fromtimestamp(unix_time(newDate) - 14400) #4 hours
+    lastTime = unix_time(eastTime)
+
+    #look for first -1
+    if(i['Value'] == -1):
+      initialTime = unix_time(eastTime)
+      for result in machine_learning(timeStamps, values, initialTime):
+        results.append(result)
+      break
+
+      timeStamps.append(str(eastTime))
+      values.append(i['Value'])
+
+  if(len(results)>0):
+    sleepStage = results[0]
+
+
   for alarm in Alarm.objects.all():
     timeDelta = abs(unix_time(currentTime) - float(alarm.text)) - 14400 #FIX THIS LATER
-    #If within 1 minute
+    #If within tolerance
     print(timeDelta)
-    if(abs(timeDelta) < (tolerance*60)):
+    if(abs(timeDelta) < (tolerance*60) and sleepStage != 5):
       print("TIME TO WAKE UP!")
+      turnOffAlarm = 0
+      alarm.delete()
+      led_on(request)
+    #Sorry about you being in deep sleep
+    elif((timeDelta > tolerance*60)):
+      print("TIME TO WAKE UP OVERRIDE!")
       turnOffAlarm = 0
       alarm.delete()
       led_on(request)

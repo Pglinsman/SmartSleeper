@@ -21,7 +21,7 @@ $(document).ready(function() {
         xhr.setRequestHeader("X-CSRFToken", csrftoken);
     }
   });
-    window.setInterval(alarm_poll, 5000);
+    window.setInterval(alarm_poll, 10000);
 });
 
 
