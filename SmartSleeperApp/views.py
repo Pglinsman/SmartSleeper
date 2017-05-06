@@ -470,7 +470,7 @@ def check_alarm(request):
       alarm.delete()
       led_on(request)
 
-  if(turnOffAlarm == 24):
+  if(turnOffAlarm == 60):
     print("ALARM TURNED OFF")
     led_off(request)
 
