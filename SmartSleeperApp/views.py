@@ -83,6 +83,9 @@ def getSleepTime(offset):
     newDate = datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
     eastTime = datetime.fromtimestamp(unix_time(newDate) - 14400) #4 hours
 
+    if(eastTime.day == 5):
+      continue
+
     if(i['Value'] == -1 and offset == -1):
       hour = int(eastTime.hour)
       minute = int(eastTime.minute)
@@ -186,6 +189,12 @@ def analytics(request):
 
   #####
   selectedDate = datetime.strptime(str(year) + "-" + str(month) + "-" + str(day) + " " + "17", '%Y-%m-%d %H')
+
+  correctedSelectedDate = datetime.fromtimestamp(unix_time(selectedDate) - 14400)
+
+  year = correctedSelectedDate.year
+  month = correctedSelectedDate.month
+  day = correctedSelectedDate.day
 
   #Table stuff
   dynamodb = boto3.resource('dynamodb', region_name='eu-west-1')
