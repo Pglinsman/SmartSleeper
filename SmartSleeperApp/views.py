@@ -434,19 +434,26 @@ def machine_learning(timeStamps, values, initialTime):
   return results
 
 
+turnOffAlarm = 0
 #Checks alarm
 @csrf_exempt
 def check_alarm(request):
+  global turnOffAlarm
   context = {}
   currentTime = datetime.today()
+  turnOffAlarm += 1
   for alarm in Alarm.objects.all():
     timeDelta = abs(unix_time(currentTime) - float(alarm.text)) - 14400 #FIX THIS LATER
     #If within 1 minute
     print(timeDelta)
     if(abs(timeDelta) < (tolerance*60)):
       print("TIME TO WAKE UP!")
+      turnOffAlarm = 0
       alarm.delete()
       led_on(request)
+
+  if(turnOffAlarm == 3):
+    led_off(request)
 
   return render(request, 'SmartSleeperApp/secret.html', context)
 
