@@ -404,8 +404,6 @@ rf.fit(trainArr, trainRes)
 
 #ML Stuff
 def machine_learning(timeStamps, values, initialTime):
-  print(" ")
-  print("Independent Machine Learning Call")
 
 
   #[0][0] is elapsed time, [0][1] is the ihr at the time
@@ -418,7 +416,7 @@ def machine_learning(timeStamps, values, initialTime):
     #print(elapsedTime)
     arr = [elapsedTime, values[i]]
     testArr.append(arr)
-    print("Elapsed time is: " + str(elapsedTime) + ", Value is: " + str(values[i]))
+    # print("Elapsed time is: " + str(elapsedTime) + ", Value is: " + str(values[i]))
 
  
 
@@ -481,8 +479,8 @@ def check_alarm(request):
         results.append(result)
       break
 
-      timeStamps.append(str(eastTime))
-      values.append(i['Value'])
+    timeStamps.append(str(eastTime))
+    values.append(i['Value'])
 
   if(len(results)>0):
     sleepStage = results[0]
