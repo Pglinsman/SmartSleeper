@@ -57,12 +57,10 @@ def alarm(request):
   for alarm in Alarm.objects.all():
     alarms.append(datetime.fromtimestamp(float(alarm.text)))
     ids.append(alarm.id)
-    print(alarm.id)
 
   alarmpair = zip(alarms, ids)
   sleep = getSleepTime(-1)
   wakeup = getSleepTime(-2)
-  print("Tolerance " + str(tolerance))
   context = {'alarms':alarmpair, 'errors':errors, 'wakeup':wakeup, 'sleep':sleep, 'tolerance':tolerance, 'wakeup':wakeup}
   return render(request, 'SmartSleeperApp/alarm.html', context)
 
@@ -107,7 +105,6 @@ def getSleepTime(offset):
 
   average = sum(events)/len(events)
 
-  print(average)
 
   hour = int(math.floor(average/60))
   minute = average%60
@@ -154,7 +151,6 @@ def analytics(request):
   month = int(now.month)
   day = int(now.day)
 
-  print(day)
 
   #####
   selectedDate = datetime.strptime(str(year) + "-" + str(month) + "-" + str(day) + " " + "17", '%Y-%m-%d %H')
@@ -201,8 +197,6 @@ def analytics(request):
 
 
   selectedDate = datetime.strptime(str(year) + "-" + str(month) + "-" + str(day) + " " + "17", '%Y-%m-%d %H')
-  print(day)
-  print(" ")
 
 
   #Table stuff
@@ -489,7 +483,9 @@ def check_alarm(request):
   for alarm in Alarm.objects.all():
     timeDelta = abs(unix_time(currentTime) - float(alarm.text)) - 14400 #FIX THIS LATER
     #If within tolerance
-    print(timeDelta)
+    print("Time difference from alarm: " + str(timeDelta))
+    print("Last sleep stage:" + str(sleepStage))
+    print(" ")
     if(abs(timeDelta) < (tolerance*60) and sleepStage != 5):
       print("TIME TO WAKE UP!")
       turnOffAlarm = 0
@@ -528,14 +524,10 @@ def add_alarm(request):
 def change_tolerance(request):
   errors = []  # A list to record messages for any errors we encounter.
   global tolerance
-  print("In change tolerance")
   if not 'time' in request.POST or not request.POST['time']:
       errors.append('You must enter an alarm to add.')
   else:
-      print("In a good if statement")
-      print(request.POST['time'])
       if(request.POST['time'].isdigit()):
-          print("Time")
 
           tolerance = int(request.POST['time'])
 
