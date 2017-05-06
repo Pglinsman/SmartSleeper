@@ -470,7 +470,8 @@ def check_alarm(request):
       alarm.delete()
       led_on(request)
 
-  if(turnOffAlarm == 8):
+  if(turnOffAlarm == 24):
+    print("ALARM TURNED OFF")
     led_off(request)
 
   return render(request, 'SmartSleeperApp/secret.html', context)
