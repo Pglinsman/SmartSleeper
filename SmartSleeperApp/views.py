@@ -61,6 +61,8 @@ def alarm(request):
   alarmpair = zip(alarms, ids)
   sleep = getSleepTime(-1)
   wakeup = getSleepTime(-2)
+  dynamodb = boto3.resource('dynamodb', region_name='eu-west-1')
+  table = dynamodb.Table('SensorData')
   response = table.query(
       KeyConditionExpression=Key('SensorId').eq("Alarm")
   )
